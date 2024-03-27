@@ -381,7 +381,7 @@ const UserPrediction = () => {
                     style={{ backgroundColor: "#034CA1" }}
                     type="submit"
                   >
-                    Prediction
+                    Predictions
                   </button>
                 </div>
               </div>
