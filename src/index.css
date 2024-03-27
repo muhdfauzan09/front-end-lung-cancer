@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #ecf1f5;
+  overflow-x: hidden;
+}
+
+.custom-fileUploader {
+  height: 500px;
+  border-width: 500px;
+  margin-top: 200px;
+}
