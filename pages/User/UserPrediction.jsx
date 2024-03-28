@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ModalComponent from "../../components/ModalComponent";
 
-const fileTypes = ["JPG", "PNG", "GIF"];
+const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
 
 const UserPrediction = () => {
   const navigate = useNavigate(); // Navigate
@@ -27,6 +27,7 @@ const UserPrediction = () => {
         "Content-Type": "multipart/form-data",
       },
     }).then((res) => console.log(res));
+    console.log("hai", file);
   };
 
   const {
