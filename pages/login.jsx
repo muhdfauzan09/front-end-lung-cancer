@@ -12,7 +12,6 @@ const Login = () => {
   const [cookies, setCookie] = useCookies();
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
-
   const {
     register,
     handleSubmit,
