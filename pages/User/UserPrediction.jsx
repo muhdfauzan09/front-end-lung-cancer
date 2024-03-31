@@ -17,19 +17,6 @@ const UserPrediction = () => {
   const [modalShow, setModalShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [cookies, removeCookie] = useCookies(["userToken"]); // Access Cookies
-
-  // Funtions
-  const imageUpload = (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-    Api.post("/user/post/prediction/image", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }).then((res) => console.log(res));
-    console.log("hai", file);
-  };
-
   const {
     register,
     handleSubmit,
@@ -388,21 +375,6 @@ const UserPrediction = () => {
               </div>
             </div>
           </form>
-
-          <div className="mt-16">
-            <div className="font-bold mb-1 text-lg">
-              <GraphicEqIcon className="text-cyan-300" />
-              Image Classification
-            </div>
-            <div className="md:p-14 sm:p-7 bg-white rounded-2xl">
-              <FileUploader
-                handleChange={imageUpload}
-                name="file"
-                types={fileTypes}
-                label="Upload or drop image right here"
-              />
-            </div>
-          </div>
         </div>
       </div>
     </>
