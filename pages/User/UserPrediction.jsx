@@ -41,7 +41,7 @@ const UserPrediction = () => {
     Api.post("/user/post/prediction", data, {
       headers: {
         "Content-Type": "Application/json",
-        Authorization: `Bearer ${cookies.token}`,
+        Authorization: `Bearer ${cookies.userToken}`,
       },
     }).then((res) => {
       if (res.data.result[0] == 0) {
