@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,11 @@ const AdminDepartment = () => {
   const navigate = useNavigate();
   const [departments, setDepartments] = useState([]);
   const [cookies, removeCookie] = useCookies(["adminToken"]);
+  const [loading, setLoading] = useState(false);
+  const [findDepartment, setFindDepartment] = useState({
+    department: "1",
+    departmentName: "",
+  });
 
   useEffect(() => {
     Api.get("/admin/department/list", {
@@ -34,6 +40,22 @@ const AdminDepartment = () => {
       });
   }, [cookies, removeCookie]);
 
+  // Function
+  const find_department = () => {
+    setLoading(true);
+    setTimeout(() => {
+      Api.post("/admin/department/list", findDepartment, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.adminToken}`,
+        },
+      }).then((res) => {
+        setDepartments(res.data.data);
+        setLoading(false);
+      });
+    }, 1000);
+  };
+
   return (
     <>
       <div className="flex">
@@ -48,26 +70,56 @@ const AdminDepartment = () => {
           <div>
             <div className="bg-white p-16 rounded-2xl">
               <div>
-                {/* Input Patiet's Name  */}
                 <div className="grid grid-cols-6 sm:gap-8">
                   <input
                     className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
                     type="text"
+                    value={findDepartment.departmentName}
                     placeholder="Department Name"
+                    onChange={(e) =>
+                      setFindDepartment({
+                        ...findDepartment,
+                        departmentName: e.target.value,
+                      })
+                    }
                   />
                   <select
-                    id="countries"
                     className="col-span-1 shadow border w-full text-lg rounded-lg focus:outline-blue-800 p-2.5"
+                    value={findDepartment.department}
+                    onChange={(e) =>
+                      setFindDepartment({
+                        ...findDepartment,
+                        department: e.target.value,
+                      })
+                    }
                   >
-                    <option value="US">Clinic</option>
-                    <option value="CA">Hospital</option>
+                    <option value="1">Clinic</option>
+                    <option value="2">Hospital</option>
                   </select>
-                  <div
-                    className="text-center p-3  font-bold text-white rounded-lg"
-                    style={{ backgroundColor: "#034CA1" }}
-                  >
-                    Find
-                  </div>
+
+                  {loading ? (
+                    <button
+                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      disabled
+                    >
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="mr-2"
+                      />
+                      Loading...
+                    </button>
+                  ) : (
+                    <button
+                      onClick={find_department}
+                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Find
+                    </button>
+                  )}
                 </div>
               </div>
 
