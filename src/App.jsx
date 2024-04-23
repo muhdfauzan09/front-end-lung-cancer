@@ -17,6 +17,7 @@ import AdminDatavisualisation from "../pages/Admin/AdminDataVisualisation";
 import NotFound from "../pages/NotFound";
 import NotAuthorized from "../pages/NotAuthorized";
 import AdminViewPatient from "../pages/Admin/AdminViewPatient";
+import UserSetting from "../pages/User/UserSetting";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/register" element={<UserRegister />} />
         <Route path="/" element={<UserSideBar />}>
           <Route index element={<UserDashboard />} />
+          <Route path="setting" element={<UserSetting />} />
           <Route path="visualisation" element={<UserDataVisualisation />} />
           <Route path="patient" element={<UserPatientList />} />
           <Route path="prediction" element={<UserPrediction />} />

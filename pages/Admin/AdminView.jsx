@@ -21,7 +21,9 @@ const AdminView = () => {
   const { id } = useParams();
   const [cookies, removeCookie] = useCookies(["adminToken"]);
   const [doctor, setDoctor] = useState({});
-  const [status, setStatus] = useState({});
+  const [status, setStatus] = useState({
+    status: "",
+  });
   const [department, setDepartment] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
@@ -38,7 +40,6 @@ const AdminView = () => {
           setPatient(res.data.patient);
           setDoctor(res.data.user);
           setDepartment(res.data.department[0]);
-          console.log(patientRef.current);
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
@@ -52,17 +53,25 @@ const AdminView = () => {
 
   // Functions
   const updateStatus = (update_status) => {
-    setStatus({ status: update_status });
-    Api.post(`/admin/doctor/update/${id}`, status, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
+    setStatus({
+      status: update_status,
+    });
+
+    Api.post(
+      `/admin/doctor/update/${id}`,
+      { status: update_status },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.adminToken}`,
+        },
+      }
+    ).then((res) => {
       setShow(true);
       setMessage(res.data.message);
+      window.location.reload();
     });
   };
-
   return (
     <>
       <ModalComponent
@@ -89,7 +98,7 @@ const AdminView = () => {
                     <div
                       className="px-14 py-3 text-center font-bold text-white rounded-lg mr-4 bg-green-600 cursor-default"
                       onClick={() => {
-                        updateStatus("Aprroved");
+                        updateStatus("Approved");
                       }}
                     >
                       Approve

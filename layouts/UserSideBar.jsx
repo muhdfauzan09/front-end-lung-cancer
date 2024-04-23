@@ -80,7 +80,12 @@ const UserSideBar = () => {
             Dashboard
           </MenuItem>
 
-          <MenuItem icon={<SettingsApplicationsRounded />}>Setting</MenuItem>
+          <MenuItem
+            icon={<SettingsApplicationsRounded />}
+            component={<Link to="/setting" />}
+          >
+            Setting
+          </MenuItem>
 
           <MenuItem
             icon={<BarChartRounded />}
