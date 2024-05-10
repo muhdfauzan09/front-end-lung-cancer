@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import Api from "../../axiosConfig";
+import Table from "@mui/material/Table";
+
 import { useCookies } from "react-cookie";
 import { Spinner } from "react-bootstrap";
-import Table from "@mui/material/Table";
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 // Icons
 import TableRow from "@mui/material/TableRow";
@@ -11,7 +13,6 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import TableContainer from "@mui/material/TableContainer";
-import Api from "../../axiosConfig";
 
 const UserPatientList = () => {
   const navigate = useNavigate();
@@ -67,7 +68,9 @@ const UserPatientList = () => {
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <div>
             <p className="font-semibold text-xl mb-14">
-              <span className="text-blue-500">Dashboard /</span>
+              <span className="text-blue-500">
+                <Link to={"/"}>Dashboard /</Link>
+              </span>
               <span> Patient List</span>
             </p>
           </div>
@@ -76,7 +79,7 @@ const UserPatientList = () => {
             <div className="bg-white p-16 rounded-2xl">
               <div>
                 {/* Input Patient's Name */}
-                <div className="grid grid-cols-6 sm:gap-8">
+                <div className="grid md:grid-cols-6 md:gap-6 sm:grid-cols-1 sm:gap-6">
                   <input
                     className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
                     value={findPatient.patient}
@@ -106,7 +109,7 @@ const UserPatientList = () => {
 
                   {loading ? (
                     <button
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      className="bg-blue-800 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                       disabled
                     >
                       <Spinner
@@ -122,7 +125,7 @@ const UserPatientList = () => {
                   ) : (
                     <button
                       onClick={find_patient}
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      className="bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     >
                       Find
                     </button>
@@ -142,7 +145,7 @@ const UserPatientList = () => {
                           <TableCell align="center">Address 1</TableCell>
                           <TableCell align="center">Address 2</TableCell>
                           <TableCell align="center">Postcode</TableCell>
-                          <TableCell align="center">Lung Cancer</TableCell>
+                          <TableCell align="center">Early Detection</TableCell>
                           <TableCell align="center">Action</TableCell>
                         </TableRow>
                       </TableHead>
@@ -189,7 +192,7 @@ const UserPatientList = () => {
                             </TableCell>
                             <TableCell align="center">
                               <Link to={`/view/patient/${row.patient_id}`}>
-                                <PageviewIcon className="text-blue-900" />
+                                <PageviewIcon className="text-blue-800" />
                               </Link>
                             </TableCell>
                           </TableRow>

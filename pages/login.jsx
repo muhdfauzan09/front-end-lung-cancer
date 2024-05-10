@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate, Link } from "react-router-dom";
 
 import Api from "../axiosConfig";
-import lungCancer from "../src/assets/lung_cancer.png";
+import lungCancer from "../src/assets/lung_cancer_logo.png";
 import ModalComponent from "../components/ModalComponent";
 
 const Login = () => {
@@ -36,6 +36,7 @@ const Login = () => {
         }
       })
       .catch((err) => {
+        console.log(err.response.data);
         setShow(true);
         setMessage(err.response.data.msg);
       });
@@ -51,11 +52,11 @@ const Login = () => {
         }}
       />
       <div className="grid md:grid-cols-2 h-screen">
-        <div className="md:col-span-1" style={{ backgroundColor: "#034CA1" }}>
+        <div className="md:col-span-1 bg-blue-800">
           <div className="md:px-28 md:py-48">
             <img
               src={lungCancer}
-              className="ml-auto mr-auto w-96"
+              className="ml-auto mr-auto w-max h-96"
               alt="Lung Cancer"
             />
             <div className="p-10 text-center">
@@ -63,7 +64,7 @@ const Login = () => {
                 EARLY STAGE LUNG CANCER
               </p>
               <p className="font-bold text-white text-4xl border-b-4 pb-10">
-                PREDICTION APPLICATION
+                PREDICTION
               </p>
             </div>
           </div>
@@ -120,14 +121,10 @@ const Login = () => {
 
               <div className="flex justify-center">
                 <input
-                  className="px-14 py-3 mt-4 font-bold text-white rounded-lg"
-                  style={{ backgroundColor: "#034CA1" }}
+                  className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold  rounded"
                   type="submit"
                   value="Login"
                 />
-              </div>
-              <div className="text-center text-blue-500 font-medium mt-3 cursor-pointer">
-                <Link to="/register">Register Account</Link>
               </div>
             </div>
           </form>

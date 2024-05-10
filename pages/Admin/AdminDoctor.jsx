@@ -163,7 +163,20 @@ const AdminDoctor = () => {
                             <TableCell align="left">
                               {item.user_phone_number}
                             </TableCell>
-                            <TableCell align="left">
+                            <TableCell
+                              align="left"
+                              style={{
+                                fontWeight: "bold",
+                                color:
+                                  item.user_status === "Pending"
+                                    ? "blue"
+                                    : item.user_status === "Approved"
+                                    ? "green"
+                                    : item.user_status === "Rejected"
+                                    ? "red"
+                                    : "inherit",
+                              }}
+                            >
                               {item.user_status}
                             </TableCell>
                             <TableCell align="left">

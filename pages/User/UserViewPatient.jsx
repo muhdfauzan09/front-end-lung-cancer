@@ -9,12 +9,17 @@ import PhotoIcon from "@mui/icons-material/Photo";
 import PersonIcon from "@mui/icons-material/Person";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
+// Components
+import ModalComponent from "../../components/ModalComponent";
+
 const UserViewPatient = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
   const [patient, setPatient] = useState({});
   const [cookies, removeCookie] = useCookies(["userToken"]);
-  const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
+  const fileTypes = ["JPG", "JPEG"];
 
   useEffect(() => {
     Api.get("/user/get/patient/details/" + id, {
@@ -45,15 +50,25 @@ const UserViewPatient = () => {
       },
     })
       .then((res) => {
-        window.location.reload(true);
+        // window.location.reload(true);
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status == 400) {
+          setShow(true);
+          setMessage(error.response.data.msg);
+        }
       });
   };
 
   return (
     <>
+      <ModalComponent
+        showModal={show}
+        message={message}
+        route={() => {
+          setShow(false);
+        }}
+      />
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <div>
@@ -73,7 +88,7 @@ const UserViewPatient = () => {
                   Patient Details
                 </div>
                 <div className="p-10 bg-white rounded-2xl">
-                  <div className="">
+                  <div className="mt-2">
                     <p className="text-md text-gray-500">
                       Lung Cancer : (Early Detection)
                     </p>
@@ -85,6 +100,23 @@ const UserViewPatient = () => {
                       }
                     >
                       {patient.lung_cancer == 0 ? "Negative" : "Positive"}
+                    </p>
+                  </div>
+
+                  <div className="mt-2">
+                    <p className="text-md text-gray-500">
+                      Lung Cancer : (Image Classification)
+                    </p>
+                    <p
+                      className={
+                        patient.image_class == "Negative"
+                          ? "text-lg font-bold text-green-600"
+                          : "text-lg font-bold text-red-600"
+                      }
+                    >
+                      {patient.image_class
+                        ? patient.image_class
+                        : "Image has not been uploaded yet"}
                     </p>
                   </div>
 
@@ -303,7 +335,6 @@ const UserViewPatient = () => {
                     <FileUploader
                       handleChange={imageUpload}
                       name="file"
-                      types={fileTypes}
                       label="Upload or drop image right here"
                     />
                   </div>

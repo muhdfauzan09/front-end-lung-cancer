@@ -11,7 +11,7 @@ import ModalComponent2 from "../components/ModalComponent2";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
+import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyRounded";
 import SettingsApplicationsRounded from "@mui/icons-material/SettingsApplicationsRounded";
 
 const UserSideBar = () => {
@@ -28,7 +28,7 @@ const UserSideBar = () => {
     <div className="flex">
       <ModalComponent2
         showModal={show}
-        message="Are You Sure You Want to Logout ?"
+        message="Are you sure you want to logout ?"
         route={() => {
           removeCookie("userToken");
           navigate("/login");
@@ -42,7 +42,7 @@ const UserSideBar = () => {
 
       <Sidebar
         collapsed={collapsed}
-        backgroundColor="#034CA1"
+        backgroundColor="#1f40af"
         width="340px"
         style={{ position: "fixed", top: "0", bottom: "0" }}
       >
@@ -53,9 +53,9 @@ const UserSideBar = () => {
               // only apply styles on first level elements of the tree
               if (level === 0)
                 return {
-                  paddingBlock: active ? "20px" : "40px",
+                  paddingBlock: active ? "20px" : "42px",
                   color: active ? "#ffffff" : "#ffffff",
-                  backgroundColor: active ? "#ffffff" : "#034CA1",
+                  backgroundColor: active ? "#ffffff" : "1f40af",
                   fontWeight: "bolder",
                   fontSize: "larger",
                   "&:hover": {

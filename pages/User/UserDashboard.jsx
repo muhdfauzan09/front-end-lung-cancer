@@ -1,23 +1,24 @@
-import { useEffect } from "react";
 import Api from "../../axiosConfig";
 import useState from "react-usestateref";
+import { useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 // Icons
-import { useNavigate, useParams } from "react-router-dom";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import PageviewOutlinedIcon from "@mui/icons-material/PageviewOutlined";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import TableContainer from "@mui/material/TableContainer";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+
+// Components
 import LineVisualisation from "../../components/LineVisualisation";
 import PieVisualisation from "../../components/PieVisualisation";
-import { RemoveFromQueue } from "@mui/icons-material";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -183,7 +184,7 @@ const UserDashboard = () => {
                         </TableCell>
 
                         <TableCell align="left">
-                          <PageviewOutlinedIcon className="text-blue-800" />
+                          <PageviewIcon className="text-blue-700" />
                         </TableCell>
                       </TableRow>
                     ))}
