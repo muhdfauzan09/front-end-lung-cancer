@@ -1,25 +1,27 @@
+import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Api from "../../axiosConfig";
 import Table from "@mui/material/Table";
+import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+
+// Icons
 import PageviewIcon from "@mui/icons-material/Pageview";
+import TableContainer from "@mui/material/TableContainer";
 
 const AdminDoctor = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
-  const [cookies, removeCookie] = useCookies(["adminToken"]);
   const [loading, setLoading] = useState(false);
+  const [cookies, removeCookie] = useCookies(["adminToken"]);
   const [findDoctor, setFindDoctor] = useState({
-    doctor: "1",
+    doctor: "3",
     doctorName: "",
   });
 
@@ -69,8 +71,8 @@ const AdminDoctor = () => {
 
           <div>
             <div className="bg-white p-16 rounded-2xl">
+              {/* Find Doctor / Department */}
               <div>
-                {/* Input Patient's Name  */}
                 <div className="grid grid-cols-6 sm:gap-8">
                   <input
                     className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
@@ -95,6 +97,9 @@ const AdminDoctor = () => {
                       })
                     }
                   >
+                    <option selected disabled value="3">
+                      Department :
+                    </option>
                     <option value="1">Clinic</option>
                     <option value="2">Hospital</option>
                   </select>
@@ -125,6 +130,7 @@ const AdminDoctor = () => {
                 </div>
               </div>
 
+              {/* Table */}
               <div>
                 <div className="mt-20">
                   <TableContainer className="rounded-xl">
@@ -155,7 +161,7 @@ const AdminDoctor = () => {
                               {item.department_name}
                             </TableCell>
                             <TableCell align="left">
-                              {item.department_id === 1 ? "Clinic" : "Hospital"}
+                              {item.department_id === 1 ? "CLINIC" : "HOSPITAL"}
                             </TableCell>
                             <TableCell align="left">
                               {item.user_email}

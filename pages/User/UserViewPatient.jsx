@@ -7,10 +7,8 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 // Icons
 import PhotoIcon from "@mui/icons-material/Photo";
 import PersonIcon from "@mui/icons-material/Person";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-
-// Components
 import ModalComponent from "../../components/ModalComponent";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
 const UserViewPatient = () => {
   const { id } = useParams();
@@ -19,7 +17,6 @@ const UserViewPatient = () => {
   const [message, setMessage] = useState("");
   const [patient, setPatient] = useState({});
   const [cookies, removeCookie] = useCookies(["userToken"]);
-  const fileTypes = ["JPG", "JPEG"];
 
   useEffect(() => {
     Api.get("/user/get/patient/details/" + id, {
@@ -50,7 +47,7 @@ const UserViewPatient = () => {
       },
     })
       .then((res) => {
-        // window.location.reload(true);
+        window.location.reload(true);
       })
       .catch((error) => {
         if (error.response.status == 400) {

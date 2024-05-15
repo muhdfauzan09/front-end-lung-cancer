@@ -1,25 +1,26 @@
+import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Api from "../../axiosConfig";
+// Icons
 import Table from "@mui/material/Table";
+import TableRow from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
 import PageviewIcon from "@mui/icons-material/Pageview";
+import TableContainer from "@mui/material/TableContainer";
 
 const AdminDepartment = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState([]);
   const [cookies, removeCookie] = useCookies(["adminToken"]);
-  const [loading, setLoading] = useState(false);
   const [findDepartment, setFindDepartment] = useState({
-    department: "1",
+    department: "",
     departmentName: "",
   });
 
@@ -40,7 +41,7 @@ const AdminDepartment = () => {
       });
   }, [cookies, removeCookie]);
 
-  // Function
+  // Functions
   const find_department = () => {
     setLoading(true);
     setTimeout(() => {
@@ -63,12 +64,13 @@ const AdminDepartment = () => {
           <div>
             <p className="font-semibold text-xl mb-14">
               <span className="text-blue-500">Dashboard / </span>
-              <span> Department</span>
+              <span>Department</span>
             </p>
           </div>
 
           <div>
             <div className="bg-white p-16 rounded-2xl">
+              {/* Filter Input */}
               <div>
                 <div className="grid grid-cols-6 sm:gap-8">
                   <input
@@ -93,6 +95,9 @@ const AdminDepartment = () => {
                       })
                     }
                   >
+                    <option value="" selected disabled>
+                      Department :
+                    </option>
                     <option value="1">Clinic</option>
                     <option value="2">Hospital</option>
                   </select>
@@ -123,6 +128,7 @@ const AdminDepartment = () => {
                 </div>
               </div>
 
+              {/* Table */}
               <div>
                 <div className="mt-20">
                   <TableContainer className="rounded-xl">
@@ -131,9 +137,9 @@ const AdminDepartment = () => {
                         <TableRow>
                           <TableCell>Department Name</TableCell>
                           <TableCell align="left">Department</TableCell>
-                          <TableCell align="left">Phone Number</TableCell>
                           <TableCell align="left">Address 1</TableCell>
                           <TableCell align="left">City</TableCell>
+                          <TableCell align="left">District</TableCell>
                           <TableCell align="left">ZipCode</TableCell>
                           <TableCell align="left">State</TableCell>
                           <TableCell align="left">Action</TableCell>
@@ -152,14 +158,14 @@ const AdminDepartment = () => {
                             </TableCell>
                             <TableCell align="left">
                               {item.department_type_id == 1
-                                ? "Clinic"
-                                : "Hospital"}
+                                ? "CLINIC"
+                                : "HOSPITAL"}
                             </TableCell>
-                            <TableCell align="left"></TableCell>
                             <TableCell align="left">
                               {item.department_address}
                             </TableCell>
                             <TableCell align="left">{item.city}</TableCell>
+                            <TableCell align="left">{item.district}</TableCell>
                             <TableCell align="left">{item.zipcode}</TableCell>
                             <TableCell align="left">{item.state}</TableCell>
                             <TableCell align="left">

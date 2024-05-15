@@ -1,23 +1,28 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import UserSideBar from "../layouts/UserSideBar";
 import Login from "../pages/login";
+import NotFound from "../pages/NotFound";
+import UserSideBar from "../layouts/UserSideBar";
+import NotAuthorized from "../pages/NotAuthorized";
+
+// User
+import UserSetting from "../pages/User/UserSetting";
 import UserRegister from "../pages/User/UserRegister";
 import UserDashboard from "../pages/User/UserDashboard";
-import UserDataVisualisation from "../pages/User/UserDataVisualisation";
-import UserPatientList from "../pages/User/UserPatientList";
 import UserPrediction from "../pages/User/UserPrediction";
+import UserPatientList from "../pages/User/UserPatientList";
 import UserViewPatient from "../pages/User/UserViewPatient";
-import AdminDepartment from "../pages/Admin/AdminDepartment";
-import AdminDoctor from "../pages/Admin/AdminDoctor";
+import UserDataVisualisation from "../pages/User/UserDataVisualisation";
+
+// Admin
 import AdminView from "../pages/Admin/AdminView";
 import AdminSideBar from "../layouts/AdminSideBar";
+import AdminDoctor from "../pages/Admin/AdminDoctor";
+import AdminAddDoctor from "../pages/Admin/AdminAddDoctor";
 import AdminDashboard from "../pages/Admin/AdminDashboard";
-import AdminDatavisualisation from "../pages/Admin/AdminDataVisualisation";
-import NotFound from "../pages/NotFound";
-import NotAuthorized from "../pages/NotAuthorized";
+import AdminDepartment from "../pages/Admin/AdminDepartment";
 import AdminViewPatient from "../pages/Admin/AdminViewPatient";
-import UserSetting from "../pages/User/UserSetting";
+import AdminDatavisualisation from "../pages/Admin/AdminDataVisualisation";
 
 function App() {
   return (
@@ -40,6 +45,7 @@ function App() {
           <Route path="visualisation" element={<AdminDatavisualisation />} />
           <Route path="department" element={<AdminDepartment />} />
           <Route path="doctor" element={<AdminDoctor />} />
+          <Route path="add/doctor" element={<AdminAddDoctor />} />
         </Route>
         <Route path="/NotAuthorized" element={<NotAuthorized />} />
         <Route path="*" element={<NotFound />} />

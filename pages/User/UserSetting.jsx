@@ -2,6 +2,7 @@ import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
+import { Spinner } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import ModalComponent from "../../components/ModalComponent";
 
@@ -14,8 +15,9 @@ import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
 const UserSetting = () => {
   const [user, setUser] = useState({});
   const [show, setShow] = useState(false);
-  const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState("");
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [department, setDepartment] = useState({});
   const [cookies, removeCookie] = useCookies(["userToken"]);
   const {
@@ -38,6 +40,7 @@ const UserSetting = () => {
 
   // Functions
   const updatePassword = (data) => {
+    setLoading(true);
     Api.post("/user/post/new_password", data, {
       headers: {
         "Content-Type": "application/json",
@@ -45,13 +48,12 @@ const UserSetting = () => {
       },
     })
       .then((res) => {
+        setLoading(false);
         setMessage(res.data.msg);
         setShow(true);
-        data.oldPassword = "";
-        data.newPassword = "";
-        data.confirmPassword = "";
       })
       .catch((err) => {
+        setLoading(false);
         setMessage(err.response.data.msg);
         setShow(true);
       });
@@ -67,7 +69,38 @@ const UserSetting = () => {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${cookies.userToken}`,
       },
-    }).catch((err) => {});
+    })
+      .then((res) => {
+        window.location.reload(true);
+      })
+      .catch((err) => {
+        if (err.response.status == 400) {
+          setShow(true);
+          setMessage(err.response.data.msg);
+        }
+      });
+  };
+
+  const editUserProfile = (event) => {
+    const selectedFile = event.target.files[0];
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    Api.post("/user/post/edit_user_profile", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${cookies.userToken}`,
+      },
+    })
+      .then((res) => {
+        window.location.reload(true);
+      })
+      .catch((err) => {
+        if (err.response.status == 400) {
+          setShow(true);
+          setMessage(err.response.data.msg);
+        }
+      });
   };
 
   return (
@@ -121,11 +154,25 @@ const UserSetting = () => {
                     </div>
                   ) : (
                     <div className="mb-3 flex justify-center">
-                      <img
-                        src={`http://127.0.0.1:5000/${user.user_profile_image}`}
-                        alt="patient image"
-                        className="rounded-full h-56"
-                      />
+                      <div>
+                        <img
+                          src={`http://127.0.0.1:5000/${user.user_profile_image}`}
+                          alt="patient image"
+                          className="rounded-full h-56 w-56 mb-3"
+                        />
+                        <input
+                          accept="image/*"
+                          id="icon-button-file"
+                          type="file"
+                          style={{ display: "none" }}
+                          onChange={editUserProfile}
+                        />
+                        <label htmlFor="icon-button-file">
+                          <div className="bg-blue-700 px-3 py-2 my-2 text-white font-bold rounded-md">
+                            Change Image Profile
+                          </div>
+                        </label>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -345,12 +392,27 @@ const UserSetting = () => {
                         )}
                     </div>
 
-                    <div className="flex justify-center">
+                    {loading ? (
+                      <button
+                        className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
+                        disabled
+                      >
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          className="mr-2"
+                        />
+                        Loading...
+                      </button>
+                    ) : (
                       <input
                         type="submit"
                         className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
                       />
-                    </div>
+                    )}
                   </div>
                 </div>
               </form>

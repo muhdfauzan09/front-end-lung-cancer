@@ -1,16 +1,14 @@
 import Api from "../../axiosConfig";
 import { useCookies } from "react-cookie";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-
-// Icons
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
 const AdminViewPatient = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(["adminToken"]);
   const [patient, setPatient] = useState({});
+  const [cookies, removeCookie] = useCookies(["adminToken"]);
 
   useEffect(() => {
     Api.get("/admin/get/patient/details/" + id, {

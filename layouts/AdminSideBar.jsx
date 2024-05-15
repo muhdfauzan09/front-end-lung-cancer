@@ -9,6 +9,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ModalComponent2 from "../components/ModalComponent2";
 import LogoutRounded from "@mui/icons-material/LoginRounded";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
 
@@ -27,7 +28,7 @@ const AdminSideBar = () => {
     <div className="flex">
       <ModalComponent2
         showModal={show}
-        message="Are You Sure You Want to Logout?"
+        message="Are you sure you want to logout ?"
         route={() => {
           removeCookie("adminToken");
           navigate("/login");
@@ -92,6 +93,12 @@ const AdminSideBar = () => {
             component={<Link to="/admin/doctor" />}
           >
             Doctor List
+          </MenuItem>
+          <MenuItem
+            icon={<PersonAddAlt1Icon />}
+            component={<Link to="/admin/add/doctor" />}
+          >
+            Add Doctor
           </MenuItem>
           <MenuItem
             icon={<LogoutRounded />}

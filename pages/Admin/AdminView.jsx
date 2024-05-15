@@ -1,33 +1,32 @@
-import useState from "react-usestateref";
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
 import Api from "../../axiosConfig";
-import PageviewIcon from "@mui/icons-material/PageviewRounded";
-import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
-import PersonIcon from "@mui/icons-material/Person";
-import GroupIcon from "@mui/icons-material/Group";
+import useState from "react-usestateref";
+import ModalComponent from "../../components/ModalComponent";
+
+// Icons
 import Table from "@mui/material/Table";
+import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import ModalComponent from "../../components/ModalComponent";
+import GroupIcon from "@mui/icons-material/Group";
+import PersonIcon from "@mui/icons-material/Person";
+import TableContainer from "@mui/material/TableContainer";
+import PageviewIcon from "@mui/icons-material/PageviewRounded";
+import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 
 const AdminView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [cookies, removeCookie] = useCookies(["adminToken"]);
-  const [doctor, setDoctor] = useState({});
-  const [status, setStatus] = useState({
-    status: "",
-  });
-  const [department, setDepartment] = useState({});
   const [show, setShow] = useState(false);
+  const [doctor, setDoctor] = useState({});
   const [message, setMessage] = useState("");
+  const [department, setDepartment] = useState({});
   const [patient, setPatient, patientRef] = useState([]);
+  const [cookies, removeCookie] = useCookies(["adminToken"]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,27 +50,6 @@ const AdminView = () => {
     fetchData();
   }, [id, navigate]);
 
-  // Functions
-  const updateStatus = (update_status) => {
-    setStatus({
-      status: update_status,
-    });
-
-    Api.post(
-      `/admin/doctor/update/${id}`,
-      { status: update_status },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.adminToken}`,
-        },
-      }
-    ).then((res) => {
-      setShow(true);
-      setMessage(res.data.message);
-      window.location.reload();
-    });
-  };
   return (
     <>
       <ModalComponent
@@ -90,33 +68,10 @@ const AdminView = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-4 gap-9">
+          <div className="grid grid-cols-4 gap-7">
             <div className="col-span-1 grid grid-rows-2">
+              {/* Doctor Detail */}
               <div className="row-span-1">
-                {doctor.user_status == "Pending" ? (
-                  <div className="grid grid-flow-col justify-stretch mb-4">
-                    <div
-                      className="px-14 py-3 text-center font-bold text-white rounded-lg mr-4 bg-green-600 cursor-default"
-                      onClick={() => {
-                        updateStatus("Approved");
-                      }}
-                    >
-                      Approve
-                    </div>
-
-                    <div
-                      className="px-14 py-3 text-center font-bold text-white rounded-lg bg-red-600 cursor-default"
-                      onClick={() => {
-                        updateStatus("Rejected");
-                      }}
-                    >
-                      Reject
-                    </div>
-                  </div>
-                ) : (
-                  ""
-                )}
-
                 <div className="font-bold mb-1 text-lg">
                   <PersonIcon className="text-cyan-300 mr-1" />
                   Doctor Detail
@@ -157,6 +112,7 @@ const AdminView = () => {
                 </div>
               </div>
 
+              {/* Department Detail*/}
               <div className="row-span-1">
                 <div className="font-bold mb-1 text-lg">
                   <ApartmentOutlinedIcon className="text-cyan-300 mr-1" />
@@ -173,7 +129,7 @@ const AdminView = () => {
                   <div className="mt-2">
                     <p className="text-md text-gray-500">Department Type :</p>
                     <p className="text-lg font-bold">
-                      {department.department_id == 1 ? "Clinic" : "Hospital"}
+                      {department.department_id == 1 ? "CLINIC" : "HOSPITAL"}
                     </p>
                   </div>
 

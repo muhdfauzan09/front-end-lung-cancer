@@ -22,9 +22,9 @@ import PieVisualisation from "../../components/PieVisualisation";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  const [cookies, removeCookie] = useCookies(["userToken"]);
-  const [user, setUser, userRef] = useState({});
   const [userList, setUserList] = useState([]);
+  const [user, setUser, userRef] = useState({});
+  const [cookies, removeCookie] = useCookies(["userToken"]);
 
   useEffect(() => {
     Api.get(`/user/get/dashboard`, {
@@ -50,11 +50,25 @@ const UserDashboard = () => {
     <>
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-36 w-screen">
-          {/* Data Overview */}
           <div className="flex justify-end mb-2">
-            <AccountCircleRoundedIcon className="text-blue-700 mr-3 mt-1" />
-            <h1 className="font-bold text-lg">{user.user_data}</h1>
+            {userRef.current.user_image_profile == null ? (
+              <div className="flex">
+                <AccountCircleRoundedIcon className="text-blue-700 mr-3 mt-1" />
+                <h1 className="font-bold text-lg">{user.user_data}</h1>
+              </div>
+            ) : (
+              <div className="flex">
+                <img
+                  src={`http://127.0.0.1:5000/${userRef.current.user_image_profile}`}
+                  alt="patient image"
+                  className="rounded-full h-10 w-10 mr-5"
+                />
+                <h1 className="font-bold text-lg mt-2">{user.user_data}</h1>
+              </div>
+            )}
           </div>
+
+          {/* Data Overview */}
           <div className="mb-14">
             <div className="font-bold mb-1 text-lg">
               <BarChartOutlinedIcon className="text-cyan-300" /> Data Overview
