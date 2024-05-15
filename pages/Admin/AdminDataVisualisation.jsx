@@ -1,13 +1,15 @@
 import * as React from "react";
-import LineVisualisation from "../../components/LineVisualisation";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import TableViewIcon from "@mui/icons-material/TableView";
+
+// Icons
 import Table from "@mui/material/Table";
+import TableRow from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import TableViewIcon from "@mui/icons-material/TableView";
+import LineVisualisation from "../../components/LineVisualisation";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 
 const rows = [
   { name: "Food1", calories: 200, fat: 10, carbs: 20, protein: 15 },

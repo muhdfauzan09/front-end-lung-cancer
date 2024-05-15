@@ -1,16 +1,15 @@
+import Api from "../axiosConfig";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { useNavigate, Link } from "react-router-dom";
-
-import Api from "../axiosConfig";
-import lungCancer from "../src/assets/lung_cancer.png";
 import ModalComponent from "../components/ModalComponent";
+import lungCancer from "../src/assets/lung_cancer_logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies();
   const [show, setShow] = useState(false);
+  const [cookies, setCookie] = useCookies();
   const [message, setMessage] = useState("");
   const {
     register,
@@ -28,11 +27,9 @@ const Login = () => {
         if (res.status === 200 && res.data.role_id === 1) {
           setCookie("adminToken", res.data.access_token);
           navigate("/admin");
-          window.location.reload(false);
         } else if (res.status === 200 && res.data.role_id === 2) {
           setCookie("userToken", res.data.access_token);
           navigate("/");
-          window.location.reload(false);
         }
       })
       .catch((err) => {
@@ -50,42 +47,44 @@ const Login = () => {
           setShow(false);
         }}
       />
-      <div className="grid md:grid-cols-2 h-screen">
-        <div className="md:col-span-1" style={{ backgroundColor: "#034CA1" }}>
-          <div className="md:px-28 md:py-48">
-            <img
-              src={lungCancer}
-              className="ml-auto mr-auto w-96"
-              alt="Lung Cancer"
-            />
+      <div className="grid md:grid-cols-2 sm:grid-cols-1  h-screen">
+        <div className="bg-blue-800 grid place-content-center">
+          <div>
+            <img src={lungCancer} className="w-full" alt="Lung Cancer" />
             <div className="p-10 text-center">
-              <p className="font-bold text-white text-4xl">
-                EARLY STAGE LUNG CANCER
+              <p className="font-bold text-white text-4xl border-b-4 pb-6">
+                Pneumocast.
               </p>
-              <p className="font-bold text-white text-4xl border-b-4 pb-10">
-                PREDICTION APPLICATION
+
+              <p className="text-zinc-200 font-normal text-sm mt-10">
+                PRIVACY POLICY | TERMS OF USE
+              </p>
+              <p className="text-zinc-200 font-normal text-sm mt-2">
+                Copyright @ 2024 Pneumocast
               </p>
             </div>
           </div>
         </div>
 
         {/* Login */}
-        <div className="md:col-span-1 bg-slate-200 md:px-32 md:py-52">
-          <form onSubmit={handleSubmit(onLogin)}>
-            <div className="p-16 bg-white rounded-2xl">
-              <p
-                className="text-center font-bold text-3xl mb-2"
-                style={{ color: "#034CA1" }}
-              >
-                Login
-              </p>
-              <p className="text-center font-medium text-lg mb-5">
-                Please Enter Your Email & Password
-              </p>
+        <div className="grid md:col-span-1 self-center">
+          <form
+            onSubmit={handleSubmit(onLogin)}
+            className="max-w-[42rem] w-full m-auto"
+          >
+            <div className="p-16 bg-white rounded-3xl">
+              <div className="mb-7">
+                <p className="font-bold mb-16 text-2xl">Pneumocast.</p>
+                <p className="text-5xl font-normal text-blue-500">Hello, </p>
+                <p className="text-6xl font-bold text-blue-700">Welcome! </p>
+              </div>
+
               <div>
                 <div className="grid grid-rows-2">
                   <div className="mb-3">
-                    <p className="font-bold mb-2">Email</p>
+                    <p className="font-bold mb-2 text-blue-700 text-xl">
+                      Email
+                    </p>
                     <input
                       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                       type="text"
@@ -101,7 +100,9 @@ const Login = () => {
                   </div>
 
                   <div>
-                    <p className="font-bold mb-2">Password</p>
+                    <p className="font-bold mb-2 text-blue-700 text-xl">
+                      Password
+                    </p>
                     <input
                       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                       type="password"
@@ -109,25 +110,25 @@ const Login = () => {
                         required: "Please Enter Your Password",
                       })}
                     />
+
                     {errors.password && (
                       <p className="text-red-500 font-bold">
                         {errors.password.message}
                       </p>
                     )}
+                    <div className="flex justify-end text-blue-400 font-bold mt-2">
+                      Forgot Password ?
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex justify-center">
                 <input
-                  className="px-14 py-3 mt-4 font-bold text-white rounded-lg"
-                  style={{ backgroundColor: "#034CA1" }}
+                  className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white text-xl font-bold rounded-3xl"
                   type="submit"
                   value="Login"
                 />
-              </div>
-              <div className="text-center text-blue-500 font-medium mt-3 cursor-pointer">
-                <Link to="/register">Register Account</Link>
               </div>
             </div>
           </form>

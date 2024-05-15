@@ -1,19 +1,16 @@
 import Api from "../../axiosConfig";
+import { Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
 import { Link, useNavigate } from "react-router-dom";
 
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ModalComponent from "../../components/ModalComponent";
 
-const fileTypes = ["JPG", "PNG", "GIF", "JPEG"];
-
 const UserPrediction = () => {
   const navigate = useNavigate(); // Navigate
-
-  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [cookies, removeCookie] = useCookies(["userToken"]); // Access Cookies
@@ -23,7 +20,6 @@ const UserPrediction = () => {
     formState: { errors },
   } = useForm();
 
-  // Functions
   useEffect(() => {
     Api.get("/user/get/prediction", {
       headers: {
@@ -37,17 +33,21 @@ const UserPrediction = () => {
     });
   }, [cookies, removeCookie]);
 
+  // Functions
   const onSubmit = (data) => {
+    setLoading(true);
     Api.post("/user/post/prediction", data, {
       headers: {
         "Content-Type": "Application/json",
         Authorization: `Bearer ${cookies.userToken}`,
       },
     }).then((res) => {
+      setLoading(false);
       if (res.data.result[0] == 0) {
         setModalShow(true);
         setModalMessage("This individual does not possess lung cancer.");
       } else if (res.data.result[0] == 1) {
+        setLoading(false);
         setModalShow(true);
         setModalMessage(
           "This person is concerned about the possibility of having lung cancer."
@@ -68,7 +68,9 @@ const UserPrediction = () => {
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <p className="font-semibold text-xl mb-14">
-            <span className="text-blue-500">Dashboard /</span>
+            <span className="text-blue-500">
+              <Link to={"/"}>Dashboard /</Link>
+            </span>
             <span> Prediction </span>
           </p>
 
@@ -78,15 +80,10 @@ const UserPrediction = () => {
                 <GraphicEqIcon className="text-cyan-300" /> Early Detection
               </div>
               <div className="md:p-14 sm:p-7 bg-white rounded-2xl">
-                {/* User's Detail */}
+                {/* Patient's Detail */}
                 <div>
                   <div className="flex">
-                    <div
-                      style={{
-                        backgroundColor: "#034CA1",
-                        borderRadius: "50%",
-                      }}
-                    >
+                    <div className="bg-blue-800 rounded-full">
                       <p className="text-white py-3 px-4">1</p>
                     </div>
                     <div className="mt-3 ml-4">
@@ -94,24 +91,24 @@ const UserPrediction = () => {
                     </div>
                   </div>
 
-                  <div className="mt-7 grid grid-cols-3 gap-6">
-                    <div className="col-span-1 py-2 pr-4">
+                  <div className="mt-7 grid md:grid-cols-3 sm:grid-cols-1 gap-6">
+                    <div className="col-span-1 pr-4">
                       <p className="font-bold mb-2">Full Name</p>
                       <input
                         {...register("fullName", {
-                          required: "Name is required",
+                          required: "Full name is required",
                         })}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
                         type="text"
                       />
-                      {errors.firstName && (
+                      {errors.fullName && (
                         <p className="text-red-500 font-bold">
-                          {errors.firstName.message}
+                          {errors.fullName.message}
                         </p>
                       )}
                     </div>
 
-                    <div className="col-span-1 py-2 pr-4">
+                    <div className="col-span-1 pr-4">
                       <p className="font-bold mb-2">Phone Number</p>
                       <input
                         {...register("phoneNumber", {
@@ -127,7 +124,7 @@ const UserPrediction = () => {
                       )}
                     </div>
 
-                    <div className="col-span-1 py-2 pr-4">
+                    <div className="col-span-1 pr-4">
                       <p className="font-bold mb-2">Gender</p>
                       <select
                         {...register("gender", {
@@ -149,7 +146,7 @@ const UserPrediction = () => {
                       )}
                     </div>
 
-                    <div className="col-span-1 py-2 pr-4">
+                    <div className="col-span-1 pr-4">
                       <p className="font-bold mb-2">Address 1</p>
                       <input
                         {...register("address1", {
@@ -165,7 +162,7 @@ const UserPrediction = () => {
                       )}
                     </div>
 
-                    <div className="col-span-1 py-2 pr-4">
+                    <div className="col-span-1 pr-4">
                       <p className="font-bold mb-2">Address 2</p>
                       <input
                         {...register("address2", {
@@ -181,7 +178,7 @@ const UserPrediction = () => {
                       )}
                     </div>
 
-                    <div className="col-span-1 py-2 pr-4">
+                    <div className="col-span-1 pr-4">
                       <p className="font-bold mb-2">Postcode</p>
                       <input
                         {...register("postcode", {
@@ -202,12 +199,7 @@ const UserPrediction = () => {
                 {/* Feature Prediction  */}
                 <div className="mt-20">
                   <div className="flex">
-                    <div
-                      style={{
-                        backgroundColor: "#034CA1",
-                        borderRadius: "50%",
-                      }}
-                    >
+                    <div className="bg-blue-800 rounded-full">
                       <p className="text-white py-3 px-4">2</p>
                     </div>
                     <div className="mt-3 ml-4">
@@ -215,7 +207,7 @@ const UserPrediction = () => {
                     </div>
                   </div>
 
-                  <div className="mt-7 grid grid-cols-3 gap-6">
+                  <div className="mt-7 grid md:grid-cols-3 sm:grid-cols-1 gap-6">
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Smoking</p>
                       <select
@@ -364,13 +356,29 @@ const UserPrediction = () => {
                 </div>
 
                 <div className="flex mt-10 justify-end">
-                  <button
-                    className="text-center px-14 py-3 font-bold text-white rounded-lg text-xl"
-                    style={{ backgroundColor: "#034CA1" }}
-                    type="submit"
-                  >
-                    Predictions
-                  </button>
+                  {loading ? (
+                    <button
+                      className="bg-blue-800 hover:bg-blue-600 text-center px-14 py-3 font-bold text-white rounded-lg text-xl"
+                      disabled
+                    >
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                        className="mr-2"
+                      />
+                      Loading...
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-blue-800 hover:bg-blue-600 text-center px-14 py-3 font-bold text-white rounded-lg text-xl"
+                      type="submit"
+                    >
+                      Predictions
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

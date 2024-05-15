@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import ModalComponent from "../../components/ModalComponent";
 import api from "../../axiosConfig";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import lungCancer from "../../src/assets/lung_cancer.png";
+import ModalComponent from "../../components/ModalComponent";
 
 const UserRegister = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
-
   const {
     register,
     handleSubmit,
@@ -24,7 +23,6 @@ const UserRegister = () => {
         "Content-Type": "application/json",
       })
       .then((res) => {
-        console.log(res);
         if (res.status == 200 && res.statusText == "OK") {
           setShow(true);
           setMessage(res.data.message);
@@ -32,7 +30,6 @@ const UserRegister = () => {
       })
       .catch((err) => {
         setShow(true);
-        console.log(err);
         setMessage(err.response.data.message);
       });
   };

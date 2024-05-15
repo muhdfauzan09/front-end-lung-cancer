@@ -1,16 +1,19 @@
+import Api from "../../axiosConfig";
+import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+// icons
+import Table from "@mui/material/Table";
+import TableRow from "@mui/material/TableRow";
+import TableHead from "@mui/material/TableHead";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import TableViewIcon from "@mui/icons-material/TableView";
 import LineVisualisation from "../../components/LineVisualisation";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import TableViewIcon from "@mui/icons-material/TableView";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Api from "../../axiosConfig";
-import { useCookies } from "react-cookie";
 
 const rows = [
   { name: "Food1", calories: 200, fat: 10, carbs: 20, protein: 15 },
@@ -49,7 +52,9 @@ const UserDataVisualisation = () => {
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           {/*Data Visualisation */}
           <p className="font-semibold text-xl mb-14">
-            <span className="text-blue-500">Dashboard /</span>
+            <span className="text-blue-500">
+              <Link to={"/"}>Dashboard /</Link>
+            </span>
             <span> Data Visualisation</span>
           </p>
 

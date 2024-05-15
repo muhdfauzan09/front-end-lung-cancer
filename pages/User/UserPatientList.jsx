@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import { Spinner, Button } from "react-bootstrap";
+import Api from "../../axiosConfig";
 import Table from "@mui/material/Table";
+import { useCookies } from "react-cookie";
+import { Spinner } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 // Icons
 import TableRow from "@mui/material/TableRow";
@@ -11,17 +12,16 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import TableContainer from "@mui/material/TableContainer";
-import Api from "../../axiosConfig";
 
 const UserPatientList = () => {
   const navigate = useNavigate();
   const [patient, setPatient] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [cookies, removeCookie] = useCookies(["userToken"]);
   const [findPatient, setFindPatient] = useState({
-    lung_cancer: "0",
+    lung_cancer: 3,
     patient: "",
   });
-  const [cookies, removeCookie] = useCookies(["userToken"]);
 
   useEffect(() => {
     Api.get("/user/get/patient", {
@@ -67,7 +67,9 @@ const UserPatientList = () => {
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <div>
             <p className="font-semibold text-xl mb-14">
-              <span className="text-blue-500">Dashboard /</span>
+              <span className="text-blue-500">
+                <Link to={"/"}>Dashboard /</Link>
+              </span>
               <span> Patient List</span>
             </p>
           </div>
@@ -75,8 +77,8 @@ const UserPatientList = () => {
           <div>
             <div className="bg-white p-16 rounded-2xl">
               <div>
-                {/* Input Patient's Name */}
-                <div className="grid grid-cols-6 sm:gap-8">
+                {/* Filter Input */}
+                <div className="grid md:grid-cols-6 md:gap-6 sm:grid-cols-1 sm:gap-6">
                   <input
                     className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
                     value={findPatient.patient}
@@ -90,7 +92,6 @@ const UserPatientList = () => {
                     }
                   />
                   <select
-                    id="conditions"
                     value={findPatient.lung_cancer}
                     onChange={(e) =>
                       setFindPatient({
@@ -98,15 +99,18 @@ const UserPatientList = () => {
                         lung_cancer: e.target.value,
                       })
                     }
-                    className="col-span-1 shadow border w-full text-lg rounded-lg focus:outline-blue-800 p-2.5"
+                    className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:outline-offset-5 focus:shadow-outline"
                   >
-                    <option value="0">Lung Cancer - Negative</option>
-                    <option value="1">Lung Cancer - Positive</option>
+                    <option disabled defaultValue value="3">
+                      Diagnosed Result :
+                    </option>
+                    <option value={0}>Lung Cancer - Negative</option>
+                    <option value={1}>Lung Cancer - Positive</option>
                   </select>
 
                   {loading ? (
                     <button
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      className="bg-blue-800 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
                       disabled
                     >
                       <Spinner
@@ -122,7 +126,7 @@ const UserPatientList = () => {
                   ) : (
                     <button
                       onClick={find_patient}
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      className="bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                     >
                       Find
                     </button>
@@ -130,6 +134,7 @@ const UserPatientList = () => {
                 </div>
               </div>
 
+              {/* Table Patient */}
               <div>
                 <div className="mt-20">
                   <TableContainer className="rounded-xl">
@@ -142,7 +147,10 @@ const UserPatientList = () => {
                           <TableCell align="center">Address 1</TableCell>
                           <TableCell align="center">Address 2</TableCell>
                           <TableCell align="center">Postcode</TableCell>
-                          <TableCell align="center">Lung Cancer</TableCell>
+                          <TableCell align="center">Early Detection</TableCell>
+                          <TableCell align="center">
+                            Image Classifcation
+                          </TableCell>
                           <TableCell align="center">Action</TableCell>
                         </TableRow>
                       </TableHead>
@@ -188,8 +196,19 @@ const UserPatientList = () => {
                               </div>
                             </TableCell>
                             <TableCell align="center">
+                              <div
+                                className={`${
+                                  row.image_class === "Negative"
+                                    ? "text-green-600 font-bold"
+                                    : "text-red-600 font-bold"
+                                }`}
+                              >
+                                {row.image_class}
+                              </div>
+                            </TableCell>
+                            <TableCell align="center">
                               <Link to={`/view/patient/${row.patient_id}`}>
-                                <PageviewIcon className="text-blue-900" />
+                                <PageviewIcon className="text-blue-800" />
                               </Link>
                             </TableCell>
                           </TableRow>
