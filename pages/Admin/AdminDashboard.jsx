@@ -45,7 +45,7 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="flex">
-        <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
+        <div className="sm:p-14 sm:pl-28 md:px-20 md:pl-40 w-screen">
           {/* Data Overview */}
           <div className="mb-14">
             <div className="font-bold mb-1 text-lg">

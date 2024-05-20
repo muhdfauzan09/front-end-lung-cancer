@@ -1,30 +1,60 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-const labels = ["January", "February", "March", "April", "May", "June"];
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const data = {
-  labels: labels,
-  datasets: [
-    {
-      label: "Total Lung Cancer",
-      backgroundColor: "#034CA1",
-      borderColor: "#034CA1",
-      borderWidth: 3,
-      data: [0, 10, 5, 2, 20, 30, 45],
-      tension: 0.3,
+const LineVisualisation = ({ graphDataNegative, graphDataPositive, label }) => {
+  const data = {
+    labels: label,
+    datasets: [
+      {
+        label: "# Positive",
+        data: graphDataPositive,
+        borderColor: "red",
+        fill: true,
+        display: false,
+      },
+      {
+        label: "# Negative",
+        data: graphDataNegative,
+        borderColor: "green",
+        fill: true,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0,
+        },
+      },
     },
-  ],
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-  },
-};
+  };
 
-const LineVisualisation = () => {
   return (
     <div>
-      <Line data={data} height="80px" width="200px" />
+      <Line data={data} options={options} height={80} width={200} />
     </div>
   );
 };
