@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// Icons
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ModalComponent from "../../components/ModalComponent";
 
@@ -13,7 +14,7 @@ const UserPrediction = () => {
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [cookies, removeCookie] = useCookies(["userToken"]); // Access Cookies
+  const [cookies, removeCookie] = useCookies(["userToken"]);
   const {
     register,
     handleSubmit,

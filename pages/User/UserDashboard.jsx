@@ -1,30 +1,35 @@
-import Api from "../../axiosConfig";
 import { useEffect } from "react";
-import useState from "react-usestateref";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-// Icons
+// Components
+import Api from "../../axiosConfig";
 import Table from "@mui/material/Table";
+import useState from "react-usestateref";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import PageviewIcon from "@mui/icons-material/Pageview";
 import TableContainer from "@mui/material/TableContainer";
+import LineVisualisation from "../../components/LineVisualisation";
+
+// Icons
+import PageviewIcon from "@mui/icons-material/Pageview";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
-// Components
-import LineVisualisation from "../../components/LineVisualisation";
-import PieVisualisation from "../../components/PieVisualisation";
-
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [userList, setUserList] = useState([]);
+  const [pieChart, setPieChart] = useState([]);
   const [user, setUser, userRef] = useState({});
   const [cookies, removeCookie] = useCookies(["userToken"]);
+  const [visualisation, setVisualisation, refVisualisation] = useState({
+    months: [],
+    positive_patient_count: [],
+    negative_patient_count: [],
+  });
 
   useEffect(() => {
     Api.get(`/user/get/dashboard`, {
@@ -32,11 +37,26 @@ const UserDashboard = () => {
         Authorization: `Bearer ${cookies.userToken}`,
       },
     })
-      .then((response) => {
-        const user_detail = response.data;
-        const user_list = response.data.patient_list;
+      .then((res) => {
+        const user_detail = res.data;
+        const user_list = res.data.patient_list;
+        const data = res.data.patient_count_by_month_list;
+
+        const months = data.map((item) => item.month);
+        const positiveCounts = data.map((item) => item.positive);
+        const negativeCounts = data.map((item) => item.negative);
         setUser(user_detail);
         setUserList(user_list);
+        setPieChart([
+          user_detail.positive_patient_count,
+          user_detail.negative_patient_count,
+          user_detail.negative_not_count,
+        ]);
+        setVisualisation({
+          months: months,
+          positive_patient_count: positiveCounts,
+          negative_patient_count: negativeCounts,
+        });
       })
       .catch((err) => {
         if (err && err.response && err.response.status === 401) {
@@ -73,8 +93,8 @@ const UserDashboard = () => {
             <div className="font-bold mb-1 text-lg">
               <BarChartOutlinedIcon className="text-cyan-300" /> Data Overview
             </div>
-            <div className="grid sm:grid-cols-1 md:grid-cols-5 gap-10">
-              <div className="p-4 text-center bg-white rounded-2xl">
+            <div className="grid sm:grid-cols-1 md:grid-cols-5 p-7 text-center bg-white rounded-2xl">
+              <div className="border-r-4 border-slate-300">
                 <p className="text-teal-600 text-5xl mb-3 font-bold">
                   {user.total_patients}
                 </p>
@@ -82,7 +102,7 @@ const UserDashboard = () => {
                   Total
                 </p>
               </div>
-              <div className="p-4 text-center bg-white rounded-2xl">
+              <div className="border-r-4 border-slate-300">
                 <p className="text-blue-600 text-5xl mb-3 font-bold">
                   {user.male_patient_count}
                 </p>
@@ -90,7 +110,7 @@ const UserDashboard = () => {
                   Male
                 </p>
               </div>
-              <div className="p-4 text-center bg-white rounded-2xl">
+              <div className="border-r-4 border-slate-300">
                 <p className="text-pink-400 text-5xl mb-3 font-bold">
                   {user.female_patient_count}
                 </p>
@@ -98,7 +118,7 @@ const UserDashboard = () => {
                   Female
                 </p>
               </div>
-              <div className="p-4 text-center bg-white rounded-2xl">
+              <div className="border-r-4 border-slate-300">
                 <p className="text-red-600 text-5xl mb-3 font-bold">
                   {user.positive_patient_count}
                 </p>
@@ -106,7 +126,7 @@ const UserDashboard = () => {
                   Positive
                 </p>
               </div>
-              <div className="p-4 text-center bg-white rounded-2xl">
+              <div>
                 <p className="text-green-600 text-5xl mb-3 font-bold">
                   {user.negative_patient_count}
                 </p>
@@ -124,11 +144,16 @@ const UserDashboard = () => {
               Visualisation
             </div>
             <div className="grid grid-cols-7 gap-10">
-              <div className="col-span-5 p-9 bg-white rounded-2xl">
-                <LineVisualisation />
-              </div>
-              <div className="col-span-2 p-14 bg-white rounded-2xl">
-                <PieVisualisation />
+              <div className="col-span-7 p-9 bg-white rounded-2xl">
+                <LineVisualisation
+                  label={refVisualisation.current.months}
+                  graphDataPositive={
+                    refVisualisation.current.positive_patient_count
+                  }
+                  graphDataNegative={
+                    refVisualisation.current.negative_patient_count
+                  }
+                />
               </div>
             </div>
           </div>

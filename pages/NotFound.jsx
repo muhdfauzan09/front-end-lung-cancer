@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NotFound = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="text-center pt-56">
@@ -11,7 +12,7 @@ const NotFound = () => {
           Sorry, the page you are looking for could not be found.
         </p>
         <div className="mt-10">
-          <Link to="/admin">
+          <Link to={navigate(-1)}>
             <button
               type="button"
               className="bg-blue-800 p-3 rounded-lg text-white font-bold"

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
 import Api from "../../axiosConfig";
@@ -24,11 +25,13 @@ const AdminView = () => {
   const [doctor, setDoctor] = useState({});
   const [department, setDepartment] = useState({});
   const [cookies, removeCookie] = useCookies(["adminToken"]);
-  const [date, setDate] = useState({
-    startDate: "",
-    endDate: "",
-    class: "null",
-  });
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
+
   const [findVisualisation, setFindVisualisation, refFindVisualisation] =
     useState({
       findMonths: [],
@@ -71,7 +74,6 @@ const AdminView = () => {
         const months = data.map((item) => item.month);
         const positiveCounts = data.map((item) => item.positive);
         const negativeCounts = data.map((item) => item.negative);
-
         setDataVisualisation({
           months: months,
           positive_patient_count: positiveCounts,
@@ -85,8 +87,8 @@ const AdminView = () => {
   }, [id, navigate, cookies.adminToken]);
 
   // Function
-  const filterDataVisualisation = () => {
-    Api.post("/admin/filter/visualizations/" + id, date, {
+  const filterDataVisualisation = (data) => {
+    Api.post("/admin/filter/visualizations/" + id, data, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.adminToken}`,
@@ -273,135 +275,143 @@ const AdminView = () => {
               <GroupIcon className="text-cyan-300 mr-1" />
               Data Visualisation
             </div>
-            <div></div>
-            <div className="bg-white p-14 rounded-2xl">
-              <div className="flex justify-evenly mb-12">
-                <select
-                  onChange={(e) => setDate({ ...date, class: e.target.value })}
-                  value={date.class}
-                  className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
-                >
-                  <option value="null" disabled>
-                    Lung Cancer
-                  </option>
-                  <option value="Positive">Positive</option>
-                  <option value="Negative">Negative</option>
-                </select>
+            <form onSubmit={handleSubmit(filterDataVisualisation)}>
+              <div className="bg-white p-14 rounded-2xl">
+                <div className="flex justify-evenly mb-12">
+                  <select
+                    {...register("class", { required: true })}
+                    className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Lung Cancer
+                    </option>
+                    <option value="Positive">Positive</option>
+                    <option value="Negative">Negative</option>
+                  </select>
 
-                <input
-                  placeholder="Start Date"
-                  type="month"
-                  className="shadow border rounded w-1/4  py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
-                  value={date.startDate}
-                  onChange={(e) =>
-                    setDate({ ...date, startDate: e.target.value })
-                  }
-                />
+                  <input
+                    placeholder="Start Date"
+                    type="month"
+                    className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                    {...register("startDate", { required: true })}
+                  />
 
-                <input
-                  placeholder="End Date"
-                  type="month"
-                  className="shadow border rounded w-1/4  py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
-                  value={date.endDate}
-                  onChange={(e) =>
-                    setDate({ ...date, endDate: e.target.value })
-                  }
-                />
+                  <input
+                    placeholder="End Date"
+                    type="month"
+                    className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                    {...register("endDate", { required: true })}
+                  />
 
-                <button
-                  className="bg-blue-700 hover:bg-blue-500 py-3 px-10 text-white rounded"
-                  onClick={filterDataVisualisation}
-                >
-                  Filter
-                </button>
-              </div>
-
-              {refFindVisualisation.current.findMonths.length > 0 ? (
-                <LineVisualisation
-                  label={refFindVisualisation.current.findMonths}
-                  graphDataPositive={
-                    refFindVisualisation.current.findPatientCount
-                  }
-                />
-              ) : (
-                <LineVisualisation
-                  label={refDataVisualisation.current.months}
-                  graphDataPositive={
-                    refDataVisualisation.current.positive_patient_count
-                  }
-                  graphDataNegative={
-                    refDataVisualisation.current.negative_patient_count
-                  }
-                />
-              )}
-
-              {refFindVisualisation.current.patientList.length != 0 ? (
-                <div className="mt-20">
-                  <TableContainer className="rounded-xl">
-                    <Table sx={{ minWidth: 650 }}>
-                      <TableHead className="bg-gray-100">
-                        <TableRow>
-                          <TableCell align="center">Patient Name</TableCell>
-                          <TableCell align="center">Patient Gender</TableCell>
-                          <TableCell align="center">
-                            Patient Phone Number
-                          </TableCell>
-                          <TableCell align="center">Early Detection</TableCell>
-                          <TableCell align="center">Image Class</TableCell>
-                          <TableCell align="center">
-                            Date Application Image
-                          </TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {refFindVisualisation.current.patientList.map(
-                          (row, index) => (
-                            <TableRow key={index}>
-                              <TableCell>{row.patient_name}</TableCell>
-                              <TableCell align="center">
-                                {row.patient_gender}
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.patient_phone_number}
-                              </TableCell>
-                              <TableCell align="center">
-                                <div
-                                  className={`${
-                                    row.lung_cancer === 0
-                                      ? "text-green-600 font-bold"
-                                      : "text-red-600 font-bold"
-                                  }`}
-                                >
-                                  {row.lung_cancer === 0
-                                    ? "Negative"
-                                    : "Positive"}
-                                </div>
-                              </TableCell>
-                              <TableCell align="center">
-                                <div
-                                  className={`${
-                                    row.image_class === "Negative"
-                                      ? "text-green-600 font-bold"
-                                      : "text-red-600 font-bold"
-                                  }`}
-                                >
-                                  {row.image_class}
-                                </div>
-                              </TableCell>
-                              <TableCell align="center">
-                                {row.image_date_classification}
-                              </TableCell>
-                            </TableRow>
-                          )
-                        )}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+                  <input
+                    type="submit"
+                    value="Filter"
+                    className="bg-blue-700 hover:bg-blue-500 py-3 px-10 text-white rounded"
+                  />
                 </div>
-              ) : (
-                <></>
-              )}
-            </div>
+
+                {refFindVisualisation.current.findMonths.length > 0 ? (
+                  <div>
+                    {getValues("class") == "Positive" ? (
+                      <LineVisualisation
+                        label={refFindVisualisation.current.findMonths}
+                        graphDataPositive={
+                          refFindVisualisation.current.findPatientCount
+                        }
+                      />
+                    ) : (
+                      <LineVisualisation
+                        label={refFindVisualisation.current.findMonths}
+                        graphDataNegative={
+                          refFindVisualisation.current.findPatientCount
+                        }
+                      />
+                    )}
+                  </div>
+                ) : (
+                  <LineVisualisation
+                    label={refDataVisualisation.current.months}
+                    graphDataPositive={
+                      refDataVisualisation.current.positive_patient_count
+                    }
+                    graphDataNegative={
+                      refDataVisualisation.current.negative_patient_count
+                    }
+                  />
+                )}
+
+                {/* Table Patient list selepas filter */}
+                {refFindVisualisation.current.patientList.length != 0 ? (
+                  <div className="mt-20">
+                    <TableContainer className="rounded-xl">
+                      <Table sx={{ minWidth: 650 }}>
+                        <TableHead className="bg-gray-100">
+                          <TableRow>
+                            <TableCell align="center">Patient Name</TableCell>
+                            <TableCell align="center">Patient Gender</TableCell>
+                            <TableCell align="center">
+                              Patient Phone Number
+                            </TableCell>
+                            <TableCell align="center">
+                              Early Detection
+                            </TableCell>
+                            <TableCell align="center">Image Class</TableCell>
+                            <TableCell align="center">
+                              Date Application Image
+                            </TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {refFindVisualisation.current.patientList.map(
+                            (row, index) => (
+                              <TableRow key={index}>
+                                <TableCell>{row.patient_name}</TableCell>
+                                <TableCell align="center">
+                                  {row.patient_gender}
+                                </TableCell>
+                                <TableCell align="center">
+                                  {row.patient_phone_number}
+                                </TableCell>
+                                <TableCell align="center">
+                                  <div
+                                    className={`${
+                                      row.lung_cancer === 0
+                                        ? "text-green-600 font-bold"
+                                        : "text-red-600 font-bold"
+                                    }`}
+                                  >
+                                    {row.lung_cancer === 0
+                                      ? "Negative"
+                                      : "Positive"}
+                                  </div>
+                                </TableCell>
+                                <TableCell align="center">
+                                  <div
+                                    className={`${
+                                      row.image_class === "Negative"
+                                        ? "text-green-600 font-bold"
+                                        : "text-red-600 font-bold"
+                                    }`}
+                                  >
+                                    {row.image_class}
+                                  </div>
+                                </TableCell>
+                                <TableCell align="center">
+                                  {row.image_date_classification}
+                                </TableCell>
+                              </TableRow>
+                            )
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
+            </form>
           </div>
         </div>
       </div>

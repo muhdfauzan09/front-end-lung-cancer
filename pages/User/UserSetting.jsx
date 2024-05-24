@@ -1,13 +1,14 @@
-import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
 import { Spinner } from "react-bootstrap";
 import { useState, useEffect } from "react";
+
+// Components
+import Api from "../../axiosConfig";
 import ModalComponent from "../../components/ModalComponent";
 
 // Icons
-import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
 import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
@@ -16,7 +17,6 @@ const UserSetting = () => {
   const [user, setUser] = useState({});
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
-  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [department, setDepartment] = useState({});
   const [cookies, removeCookie] = useCookies(["userToken"]);
@@ -29,13 +29,18 @@ const UserSetting = () => {
 
   useEffect(() => {
     Api.get("/user/get/setting", {
-      headers: {
-        Authorization: `Bearer ${cookies.userToken}`,
-      },
-    }).then((res) => {
-      setUser(res.data.user_detail);
-      setDepartment(res.data.department_detail);
-    });
+      headers: { Authorization: `Bearer ${cookies.userToken}` },
+    })
+      .then((res) => {
+        setUser(res.data.user_detail);
+        setDepartment(res.data.department_detail);
+      })
+      .catch((err) => {
+        if (err && err.response && err.response.status === 401) {
+          removeCookie("userToken");
+          navigate("/login");
+        }
+      });
   }, []);
 
   // Functions
@@ -60,9 +65,8 @@ const UserSetting = () => {
   };
 
   const addUserProfile = (event) => {
-    const selectedFile = event.target.files[0];
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", event.target.files[0]); // Apend the selected file
 
     Api.post("/user/post/add_user_profile", formData, {
       headers: {
@@ -70,11 +74,9 @@ const UserSetting = () => {
         Authorization: `Bearer ${cookies.userToken}`,
       },
     })
-      .then((res) => {
-        window.location.reload(true);
-      })
+      .then(() => window.location.reload(true))
       .catch((err) => {
-        if (err.response.status == 400) {
+        if (err.response.status === 400) {
           setShow(true);
           setMessage(err.response.data.msg);
         }
@@ -82,9 +84,8 @@ const UserSetting = () => {
   };
 
   const editUserProfile = (event) => {
-    const selectedFile = event.target.files[0];
     const formData = new FormData();
-    formData.append("file", selectedFile);
+    formData.append("file", event.target.files[0]); // Append the selected file
 
     Api.post("/user/post/edit_user_profile", formData, {
       headers: {
@@ -92,11 +93,9 @@ const UserSetting = () => {
         Authorization: `Bearer ${cookies.userToken}`,
       },
     })
-      .then((res) => {
-        window.location.reload(true);
-      })
+      .then(() => window.location.reload(true))
       .catch((err) => {
-        if (err.response.status == 400) {
+        if (err.response.status === 400) {
           setShow(true);
           setMessage(err.response.data.msg);
         }
@@ -108,16 +107,14 @@ const UserSetting = () => {
       <ModalComponent
         showModal={show}
         message={message}
-        route={() => {
-          setShow(false);
-        }}
+        route={() => setShow(false)}
       />
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-36 w-screen">
           <div>
             <p className="font-semibold text-xl mb-14">
               <span className="text-blue-500">
-                <Link to={"/"}>Dashboard /</Link>
+                <Link to="/">Dashboard /</Link>
               </span>
               <span> Setting</span>
             </p>
@@ -129,7 +126,9 @@ const UserSetting = () => {
               <div className="font-bold mb-1 text-lg">
                 <AccountCircleIcon className="text-cyan-300" /> User Info
               </div>
+
               <div className="bg-white p-16 pt-8 rounded-2xl">
+                {/* Profile Picture */}
                 <div className="text-center">
                   {user.user_profile_image == null ? (
                     <div>
@@ -177,7 +176,7 @@ const UserSetting = () => {
                   )}
                 </div>
 
-                {/* Input */}
+                {/* User Info Details */}
                 <div className="col-span-1 py-2">
                   <p className="font-bold mb-2">First Name</p>
                   <input
@@ -241,14 +240,13 @@ const UserSetting = () => {
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         value={
-                          department.department_type_id == 1
+                          department.department_type_id === 1
                             ? "CLINIC"
                             : "HOSPITAL"
                         }
                         disabled
                       />
                     </div>
-
                     <div className="py-2">
                       <p className="font-bold mb-2">Department Name</p>
                       <input
@@ -258,7 +256,6 @@ const UserSetting = () => {
                         disabled
                       />
                     </div>
-
                     <div className="py-2">
                       <p className="font-bold mb-2">Department Address</p>
                       <input
@@ -268,7 +265,6 @@ const UserSetting = () => {
                         disabled
                       />
                     </div>
-
                     <div className="py-2">
                       <p className="font-bold mb-2">City</p>
                       <input
@@ -278,7 +274,6 @@ const UserSetting = () => {
                         disabled
                       />
                     </div>
-
                     <div className="py-2">
                       <p className="font-bold mb-2">State</p>
                       <input
@@ -288,7 +283,6 @@ const UserSetting = () => {
                         disabled
                       />
                     </div>
-
                     <div className="py-2">
                       <p className="font-bold mb-2">ZipCode</p>
                       <input
@@ -309,7 +303,6 @@ const UserSetting = () => {
                     <EnhancedEncryptionIcon className="text-cyan-300" /> Change
                     Password
                   </div>
-
                   <div className="bg-white p-16 pt-8 rounded-2xl grid grid-cols-2 gap-7">
                     <div>
                       <p className="font-bold mb-2">New Password</p>
@@ -319,7 +312,6 @@ const UserSetting = () => {
                           minLength: 8,
                         })}
                         className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
-                        name="newPassword"
                         type="password"
                       />
                       {errors.newPassword && (
@@ -328,13 +320,12 @@ const UserSetting = () => {
                         </p>
                       )}
                       {errors.newPassword &&
-                        errors.newPassword.type == "minLength" && (
+                        errors.newPassword.type === "minLength" && (
                           <p className="text-red-500 font-bold">
                             Password is less than 8
                           </p>
                         )}
                     </div>
-
                     <div>
                       <p className="font-bold mb-2">Confirm Password</p>
                       <input
@@ -343,10 +334,9 @@ const UserSetting = () => {
                           minLength: 8,
                           validate: (value) =>
                             value === getValues("newPassword") ||
-                            "password is not match",
+                            "Passwords do not match",
                         })}
                         className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
-                        name="confirmPassword"
                         type="password"
                       />
                       {errors.confirmPassword && (
@@ -355,13 +345,12 @@ const UserSetting = () => {
                         </p>
                       )}
                       {errors.confirmPassword &&
-                        errors.confirmPassword.type == "minLength" && (
+                        errors.confirmPassword.type === "minLength" && (
                           <p className="text-red-500 font-bold">
                             Password is less than 8
                           </p>
                         )}
                     </div>
-
                     <div>
                       <p className="font-bold mb-2">Old Password</p>
                       <input
@@ -370,7 +359,6 @@ const UserSetting = () => {
                           minLength: 8,
                         })}
                         className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
-                        name="oldPassword"
                         type="password"
                       />
                       {errors.oldPassword && (
@@ -379,19 +367,12 @@ const UserSetting = () => {
                         </p>
                       )}
                       {errors.oldPassword &&
-                        errors.oldPassword.type == "minLength" && (
+                        errors.oldPassword.type === "minLength" && (
                           <p className="text-red-500 font-bold">
                             Password is less than 8
                           </p>
                         )}
-                      {errors.password &&
-                        errors.password.type == "validate" && (
-                          <p className="text-red-500 font-bold">
-                            {errors.password.message}
-                          </p>
-                        )}
                     </div>
-
                     {loading ? (
                       <button
                         className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
