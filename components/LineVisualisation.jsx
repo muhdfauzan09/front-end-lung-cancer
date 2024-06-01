@@ -1,47 +1,37 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 const LineVisualisation = ({ graphDataNegative, graphDataPositive, label }) => {
   const data = {
     labels: label,
     datasets: [
       {
+        fill: true,
+        borderColor: "red",
         label: "# Positive",
         data: graphDataPositive,
-        borderColor: "red",
-        fill: true,
-        display: false,
+        pointBackgroundColor: "red",
       },
       {
-        label: "# Negative",
-        data: graphDataNegative,
-        borderColor: "green",
         fill: true,
+        label: "# Negative",
+        borderColor: "green",
+        data: graphDataNegative,
+        pointBackgroundColor: "green",
       },
     ],
   };
 
   const options = {
+    plugins: {
+      legend: {
+        labels: {
+          borderRadius: 1000,
+          usePointStyle: true,
+          useBorderRadius: true,
+        },
+      },
+    },
     scales: {
       y: {
         beginAtZero: true,

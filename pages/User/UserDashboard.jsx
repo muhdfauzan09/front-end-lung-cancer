@@ -193,7 +193,7 @@ const UserDashboard = () => {
                               row.lung_cancer === 0
                                 ? "bg-green-600"
                                 : "bg-red-500"
-                            } mr-2 rounded-full px-2`}
+                            } mr-2 rounded-full px-[3px]`}
                           />
                           {row.patient_name}
                         </TableCell>

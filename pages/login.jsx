@@ -47,7 +47,7 @@ const Login = () => {
           setShow(false);
         }}
       />
-      <div className="grid md:grid-cols-2 sm:grid-cols-1  h-screen">
+      <div className="grid md:grid-cols-2 sm:grid-cols-1 h-screen">
         <div className="bg-blue-800 grid place-content-center">
           <div>
             <img src={lungCancer} className="w-full" alt="Lung Cancer" />

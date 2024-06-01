@@ -65,6 +65,8 @@ const UserPatientList = () => {
             setLoading(false);
             setMessage(err.response.data.msg);
             setShow(true);
+          } else if (err && err.response.status === 500) {
+            setLoading(false);
           }
         });
     }, 1000);
@@ -106,13 +108,13 @@ const UserPatientList = () => {
                     className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:outline-offset-5 focus:shadow-outline"
                   >
                     <option value="">Diagnosed Result :</option>
-                    <option value={0}>Lung Cancer - Negative</option>
-                    <option value={1}>Lung Cancer - Positive</option>
+                    <option value="Negative">Lung Cancer - Negative</option>
+                    <option value="Positive">Lung Cancer - Positive</option>
                   </select>
 
                   {loading ? (
                     <button
-                      className="bg-blue-800 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                      className="py-2 px-4 bg-blue-800 hover:bg-blue-600 text-white font-bold  rounded"
                       disabled
                     >
                       <Spinner
@@ -129,7 +131,7 @@ const UserPatientList = () => {
                     <input
                       value="Find"
                       type="submit"
-                      className="bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      className="py-2 px-4 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold  rounded"
                     />
                   )}
                 </div>
