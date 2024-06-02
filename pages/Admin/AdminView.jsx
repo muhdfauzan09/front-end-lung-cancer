@@ -113,129 +113,122 @@ const AdminView = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-4 gap-12">
-            <div className="col-span-1">
-              <div className="font-bold mb-1 text-lg">
-                <PersonIcon className="text-cyan-300 mr-1" />
-                Doctor Profile
-              </div>
-              {doctor.user_profile_image ? (
-                <div className="p-10 h-full grid place-items-center bg-white rounded-2xl">
+          <div className="grid grid-cols-6 gap-12">
+            <div className="col-span-4 grid grid-cols-7 p-10 bg-white rounded-2xl">
+              <div className="col-span-2 border-r-4">
+                {doctor.user_profile_image ? (
                   <img
                     src={`http://127.0.0.1:5000/${doctor.user_profile_image}`}
                     alt="patient image"
-                    className="rounded-full w-72 mb-3"
+                    className="rounded-full w-40 mb-10"
                   />
-                </div>
-              ) : (
-                <div className="p-10 h-full grid place-items-center bg-white rounded-2xl">
+                ) : (
                   <AccountCircleIcon
                     className="text-gray-300"
-                    style={{ fontSize: "300px" }}
+                    style={{ fontSize: "150px", marginBottom: "2px" }}
+                  />
+                )}
+
+                <div>
+                  <p className="font-bold">Doctor's Name :</p>
+                  <div>
+                    {doctor.user_first_name} {doctor.user_last_name}
+                  </div>
+                </div>
+
+                <div>
+                  <p className="font-bold mt-3"> Phone Number :</p>
+                  <div> {doctor.user_phone_number}</div>
+                </div>
+
+                <div>
+                  <p className="font-bold mt-3"> Email :</p>
+                  <div>{doctor.user_email}</div>
+                </div>
+
+                <div>
+                  <p className="font-bold mt-3"> Status :</p>
+                  <div className="font-bold text-green-700">Approved</div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 col-span-5 p-8 gap-4">
+                <div>
+                  <p className="font-bold">Department Name :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={department.department_name}
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
                   />
                 </div>
-              )}
-            </div>
 
-            {/* Doctor Detail */}
-            <div className="col-span-1">
-              <div className="font-bold mb-1 text-lg">
-                <PersonIcon className="text-cyan-300 mr-1" />
-                Doctor Detail
-              </div>
-              <div className="p-10 h-full bg-white rounded-2xl">
-                <div className="">
-                  <p className="text-md text-gray-500">Doctor's Name :</p>
-                  <p className="text-lg font-bold">
-                    {doctor.user_first_name} {doctor.user_last_name}
-                  </p>
-                </div>
-
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Email :</p>
-                  <p className="text-lg font-bold">{doctor.user_email}</p>
-                </div>
-
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Phone Number :</p>
-                  <p className="text-lg font-bold">
-                    {doctor.user_phone_number}
-                  </p>
-                </div>
-
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Department Type :</p>
-                  <p className="text-lg font-bold">
-                    {department.department_id === 1 ? "Clinic" : "Hospital"}
-                  </p>
-                </div>
-
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Department Name :</p>
-                  <p className="text-lg font-bold">
-                    {department.department_name}
-                  </p>
-                </div>
-
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Status :</p>
-                  <p className="text-lg font-bold text-green-600">Approved</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Department Detail */}
-            <div className="col-span-1">
-              <div className="font-bold mb-1 text-lg">
-                <ApartmentOutlinedIcon className="text-cyan-300 mr-1" />
-                Department Detail
-              </div>
-              <div className="p-10 h-full bg-white rounded-2xl">
                 <div>
-                  <p className="text-md text-gray-500">Department Name :</p>
-                  <p className="text-lg font-bold">
-                    {department.department_name}
-                  </p>
+                  <p className="font-bold">Department Name :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={department.department_name}
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                  />
                 </div>
 
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Department Type :</p>
-                  <p className="text-lg font-bold">
-                    {department.department_id === 1 ? "CLINIC" : "HOSPITAL"}
-                  </p>
+                <div>
+                  <p className="font-bold">Department Type :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={
+                      department.department_id === 1 ? "Clinic" : "Hospital"
+                    }
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                  />
                 </div>
 
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">Address :</p>
-                  <p className="text-lg font-bold">
-                    {department.department_address}
-                  </p>
+                <div>
+                  <p className="font-bold">Department (Address) :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={department.department_address}
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                  />
                 </div>
 
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">City :</p>
-                  <p className="text-lg font-bold">{department.city}</p>
+                <div>
+                  <p className="font-bold">Department (City) :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={department.city}
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                  />
                 </div>
 
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">ZipCode :</p>
-                  <p className="text-lg font-bold">{department.zipcode}</p>
+                <div>
+                  <p className="font-bold">Department (zipCode) :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={department.zipcode}
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                  />
                 </div>
 
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">State :</p>
-                  <p className="text-lg font-bold">{department.state}</p>
+                <div>
+                  <p className="font-bold">Department (State) :</p>
+                  <input
+                    disabled
+                    type="text"
+                    value={department.state}
+                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Patient Detail */}
-            <div className="col-span-1">
-              <div className="font-bold mb-1 text-lg">
-                <ApartmentOutlinedIcon className="text-cyan-300 mr-1" />
-                Department Detail
-              </div>
-
+            <div className="col-span-2">
               <div className="p-10 h-full bg-white rounded-2xl">
                 <div>
                   <p className="text-md text-gray-500">Total Patient :</p>

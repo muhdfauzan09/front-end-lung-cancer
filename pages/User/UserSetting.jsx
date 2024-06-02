@@ -21,6 +21,7 @@ const UserSetting = () => {
   const [department, setDepartment] = useState({});
   const [cookies, removeCookie] = useCookies(["userToken"]);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [messagePasswordModal, setMessagePasswordModal] = useState("");
   const {
     register,
     handleSubmit,
@@ -59,7 +60,7 @@ const UserSetting = () => {
       })
       .catch((err) => {
         setLoading(false);
-        setMessage(err.response.data.msg);
+        setMessagePasswordModal(err.response.data.msg);
       });
   };
 
@@ -78,6 +79,9 @@ const UserSetting = () => {
         if (err.response.status === 400) {
           setShow(true);
           setMessage(err.response.data.msg);
+        } else if (err.response.status === 500) {
+          setShow(true);
+          setMessage("The file exceeds the 5MB limit. Please try again.");
         }
       });
   };
@@ -97,12 +101,22 @@ const UserSetting = () => {
         if (err.response.status === 400) {
           setShow(true);
           setMessage(err.response.data.msg);
+        } else if (err.response.status === 500) {
+          setShow(true);
+          setMessage("The file exceeds the 5MB limit. Please try again.");
         }
       });
   };
 
   return (
     <>
+      <ModalComponent
+        showModal={show}
+        message={message}
+        route={() => {
+          setShow(false);
+        }}
+      />
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-36 w-screen">
           <div>
@@ -123,12 +137,12 @@ const UserSetting = () => {
                 {/* Profile Picture */}
                 <div>
                   {user.user_profile_image == null ? (
-                    <div>
+                    <div className="flex justify-start">
                       <AccountCircleIcon
                         className="text-gray-300"
                         style={{ fontSize: "150px" }}
                       />
-                      <div>
+                      <div className="ml-10 mt-auto mb-auto">
                         <input
                           accept="image/*"
                           id="icon-button-file"
@@ -297,7 +311,7 @@ const UserSetting = () => {
                     className="px-3 py-3 my-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
                     onClick={() => setShowPasswordModal(true)}
                   >
-                    Change Image Profile
+                    Change Password
                   </div>
                 </div>
 
@@ -376,34 +390,43 @@ const UserSetting = () => {
                             </p>
                           )}
                         <p className="text-red-500 font-bold">
-                          {message ? message : ""}
+                          {messagePasswordModal ? messagePasswordModal : ""}
                         </p>
                       </div>
-                      {loading ? (
-                        <button
-                          className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
-                          disabled
-                        >
-                          <Spinner
-                            as="span"
-                            animation="grow"
-                            size="sm"
-                            role="status"
-                            aria-hidden="true"
-                            className="mr-2"
-                          />
-                          Loading...
-                        </button>
-                      ) : (
-                        <input
-                          type="submit"
-                          value="Change Password"
-                          className="px-3 py-3 my-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
-                        />
-                      )}
+                      <div>
+                        {loading ? (
+                          <button
+                            className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
+                            disabled
+                          >
+                            <Spinner
+                              as="span"
+                              animation="grow"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                              className="mr-2"
+                            />
+                            Loading...
+                          </button>
+                        ) : (
+                          <div className="flex mt-14">
+                            <input
+                              type="submit"
+                              value="Change Password"
+                              className="px-3 py-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md mr-4"
+                            />
+                            <div
+                              className="px-3 py-2 border-2 border-blue-400  bg-slate-50 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md cursor-pointer"
+                              onClick={() => setShowPasswordModal(false)}
+                            >
+                              Cancel
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </form>
                   </Modal.Body>
-                  <Modal.Footer></Modal.Footer>
                 </Modal>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ModalComponent2 from "../components/ModalComponent2";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
@@ -25,10 +26,10 @@ const UserSideBar = () => {
   };
 
   return (
-    <div className="flex">
+    <div>
       <ModalComponent2
         showModal={show}
-        message="Are you sure you want to logout ?"
+        message="Are you sure you want to logout?"
         route={() => {
           removeCookie("userToken");
           navigate("/login");
@@ -43,11 +44,11 @@ const UserSideBar = () => {
       <Sidebar
         collapsed={collapsed}
         backgroundColor="#1f40af"
-        width="340px"
+        width="380px"
         style={{ position: "fixed", top: "0", bottom: "0" }}
       >
         <Menu
-          className={collapsed ? "py-2" : "px-4 py-2"}
+          className={collapsed ? "py-2 mt-10" : "px-4 py-2 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
               // only apply styles on first level elements of the tree
@@ -68,13 +69,26 @@ const UserSideBar = () => {
             },
           }}
         >
-          <MenuItem
-            className={collapsed ? "pt-10 text-white" : "pt-10 text-white"}
-            icon={<MenuIcon />}
-            onClick={() => {
-              handleToggleCollapse();
-            }}
-          ></MenuItem>
+          {collapsed ? (
+            <MenuItem
+              icon={<MenuIcon />}
+              onClick={handleToggleCollapse}
+            ></MenuItem>
+          ) : (
+            <MenuItem suffix={<ArrowBackIcon />} onClick={handleToggleCollapse}>
+              <div
+                style={{
+                  padding: "10px",
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                  letterSpacing: "1px",
+                }}
+              >
+                Pnuemocast.
+              </div>
+            </MenuItem>
+          )}
 
           <MenuItem icon={<GridViewRounded />} component={<Link to="/" />}>
             Dashboard
