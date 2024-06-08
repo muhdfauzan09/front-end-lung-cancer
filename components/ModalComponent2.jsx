@@ -10,13 +10,13 @@ const ModalComponent2 = ({ showModal, message, cancel, route }) => {
         </Modal.Body>
         <Modal.Footer>
           <div
-            className="px-14 py-3 font-bold bg-blue-700 hover:bg-blue-600 text-white rounded-lg cursor-pointer"
+            className="px-14 py-3 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
             onClick={() => route()}
           >
             Yes
           </div>
           <div
-            className="px-14 py-3 font-bold bg-red-500 hover:bg-red-300 text-white rounded-lg cursor-pointer"
+            className="px-14 py-3 bg-red-400 hover:bg-red-300 text-white hover:text-white font-bold rounded-md"
             onClick={() => cancel()}
           >
             No

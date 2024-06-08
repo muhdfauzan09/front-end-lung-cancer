@@ -374,10 +374,10 @@ const UserPrediction = () => {
                     </button>
                   ) : (
                     <button
-                      className="bg-blue-800 hover:bg-blue-600 text-center px-14 py-3 font-bold text-white rounded-lg text-xl"
+                      className="px-14 py-3 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
                       type="submit"
                     >
-                      Predictions
+                      Predict
                     </button>
                   )}
                 </div>

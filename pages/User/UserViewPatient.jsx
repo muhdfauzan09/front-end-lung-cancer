@@ -78,102 +78,119 @@ const UserViewPatient = () => {
           </div>
 
           <div className="grid md:grid-cols-4 sm:grid-cols-1 gap-9">
-            <div className="md:col-span-1 sm:col-span-1 grid grid-rows-2 gap-9">
-              <div className="row-span-2">
-                <div className="font-bold mb-1 text-lg">
-                  <PersonIcon className="text-cyan-300 mr-1" />
-                  Patient Details
-                </div>
-                <div className="p-10 bg-white rounded-2xl">
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">
-                      Lung Cancer : (Early Detection)
-                    </p>
-                    <p
-                      className={
-                        patient.lung_cancer == 0
-                          ? "text-lg font-bold text-green-600"
-                          : "text-lg font-bold text-red-600"
-                      }
-                    >
-                      {patient.lung_cancer == 0 ? "Negative" : "Positive"}
-                    </p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">
-                      Lung Cancer : (Image Classification)
-                    </p>
-                    <p
-                      className={
-                        patient.image_class == "Negative"
-                          ? "text-lg font-bold text-green-600"
-                          : "text-lg font-bold text-red-600"
-                      }
-                    >
-                      {patient.image_class
-                        ? patient.image_class
-                        : "Image has not been uploaded yet"}
-                    </p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">Name :</p>
-                    <p className="text-lg font-bold">{patient.patient_name}</p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">Phone Number :</p>
-                    <p className="text-lg font-bold">
-                      {patient.patient_phone_number}
-                    </p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">Gender :</p>
-                    <p className="text-lg font-bold">
-                      {patient.patient_gender}
-                    </p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">Address 1 :</p>
-                    <p className="text-lg font-bold">
-                      {patient.patient_address1}
-                    </p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">Address 2 :</p>
-                    <p className="text-lg font-bold">
-                      {patient.patient_address2}
-                    </p>
-                  </div>
-
-                  <div className="mt-2">
-                    <p className="text-md text-gray-500">Postcode :</p>
-                    <p className="text-lg font-bold">
-                      {patient.patient_postcode}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="md:col-span-3 sm:col-span-1">
+            <div className="md:col-span-4 sm:col-span-1">
               {/* Feature */}
               <div>
                 <div className="font-bold mb-1 text-lg">
                   <LocalHospitalIcon className="text-cyan-300 mr-1" />
                   Patient Feature
                 </div>
-
                 <div className="bg-white p-12 rounded-2xl">
+                  <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6 mb-20">
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">
+                        Lung Cancer : (Early Detection)
+                      </p>
+                      <input
+                        className={
+                          patient.lung_cancer == 0
+                            ? "shadow appearance-none border rounded w-full py-2 px-3  focus:outline-blue-800 focus:shadow-outline text-green-600"
+                            : "shadow appearance-none border rounded w-full py-2 px-3  focus:outline-blue-800 focus:shadow-outline text-red-600"
+                        }
+                        type="text"
+                        disabled
+                        value={
+                          patient.lung_cancer == 0 ? "Negative" : "Positive"
+                        }
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">
+                        Lung Cancer : (Image Classification)
+                      </p>
+                      <input
+                        className={
+                          patient.image_class == "Negative"
+                            ? "shadow appearance-none border rounded w-full py-2 px-3  focus:outline-blue-800 focus:shadow-outline text-green-600"
+                            : "shadow appearance-none border rounded w-full py-2 px-3  focus:outline-blue-800 focus:shadow-outline text-red-600"
+                        }
+                        type="text"
+                        disabled
+                        value={
+                          patient.image_class
+                            ? patient.image_class
+                            : "Image has not been uploaded yet"
+                        }
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">Name :</p>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                        type="text"
+                        disabled
+                        value={patient.patient_name}
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">Phone Number :</p>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                        type="text"
+                        disabled
+                        value={patient.patient_phone_number}
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">Gender :</p>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                        type="text"
+                        disabled
+                        value={patient.patient_gender}
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">Address 1 :</p>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                        type="text"
+                        disabled
+                        value={patient.patient_address1}
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">Address 2 :</p>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                        type="text"
+                        disabled
+                        value={patient.patient_address2}
+                      />
+                    </div>
+
+                    <div className="mt-2">
+                      <p className="font-bold mb-2">Postcode :</p>
+                      <input
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                        type="text"
+                        disabled
+                        value={patient.patient_postcode}
+                      />
+                    </div>
+                  </div>
+
                   <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Smoking</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={patient.smoking == 1 ? "Non-Smoking" : "Smoking"}
@@ -183,7 +200,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Yellow Fingers</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -197,7 +214,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Anxiety</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={patient.anxiety == 1 ? "No Anxiety" : "Anxiety"}
@@ -207,7 +224,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Peer Pressure</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -221,7 +238,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Chronic Disease</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -235,7 +252,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Fatigue</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={patient.fatigue == 1 ? "No Fatigue" : "Fatigue"}
@@ -245,7 +262,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Allergy</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={patient.allergy == 1 ? "No Allergy" : "Allergy"}
@@ -255,7 +272,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Wheezing</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -267,7 +284,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Alcohol Consuming</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -281,7 +298,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Coughing</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -293,7 +310,7 @@ const UserViewPatient = () => {
                     <div className="col-span-1 py-2 pr-4">
                       <p className="font-bold mb-2">Shortness Breath</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
@@ -305,15 +322,15 @@ const UserViewPatient = () => {
                     </div>
 
                     <div className="col-span-1 py-2 pr-4">
-                      <p className="font-bold mb-2">Swallowing Dificulty</p>
+                      <p className="font-bold mb-2">Swallowing Difficulty</p>
                       <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                         type="text"
                         disabled
                         value={
                           patient.swallowing_dificulty == 1
-                            ? "No Swallowing Dificulty"
-                            : "Swallowing Dificulty"
+                            ? "No Swallowing Difficulty"
+                            : "Swallowing Difficulty"
                         }
                       />
                     </div>

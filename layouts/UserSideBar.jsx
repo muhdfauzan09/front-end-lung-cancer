@@ -7,6 +7,7 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
+import lung_cancer from "../src/assets/lung_cancer_logo.png";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ModalComponent2 from "../components/ModalComponent2";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
@@ -19,14 +20,14 @@ const UserSideBar = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
 
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
 
   return (
-    <div>
+    <>
       <ModalComponent2
         showModal={show}
         message="Are you sure you want to logout?"
@@ -44,81 +45,76 @@ const UserSideBar = () => {
       <Sidebar
         collapsed={collapsed}
         backgroundColor="#1f40af"
-        width="380px"
-        style={{ position: "fixed", top: "0", bottom: "0" }}
+        width="350px"
+        style={{
+          position: "fixed",
+          top: "0",
+          bottom: "0",
+        }}
       >
         <Menu
-          className={collapsed ? "py-2 mt-10" : "px-4 py-2 mt-10"}
+          className={collapsed ? "mt-10" : "px-4 py-6 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
-              // only apply styles on first level elements of the tree
               if (level === 0)
                 return {
-                  paddingBlock: active ? "20px" : "42px",
-                  color: active ? "#ffffff" : "#ffffff",
-                  backgroundColor: active ? "#ffffff" : "1f40af",
-                  fontWeight: "bolder",
+                  fontWeight: "bold",
                   fontSize: "larger",
+                  color: active ? "#1f40af" : "#ffffff",
+                  paddingBlock: active ? "20px" : "42px",
                   "&:hover": {
-                    backgroundColor: "white !important",
                     color: "black !important",
-                    borderRadius: collapsed ? "0" : "10px !important",
                     fontWeight: "bolder !important",
+                    backgroundColor: "white !important",
+                    borderRadius: active ? "15px" : "10px !important",
                   },
                 };
             },
           }}
         >
           {collapsed ? (
-            <MenuItem
-              icon={<MenuIcon />}
-              onClick={handleToggleCollapse}
-            ></MenuItem>
+            <MenuItem>
+              <div>
+                <img src={lung_cancer} style={{ height: "33px" }} />
+              </div>
+            </MenuItem>
           ) : (
-            <MenuItem suffix={<ArrowBackIcon />} onClick={handleToggleCollapse}>
-              <div
-                style={{
-                  padding: "10px",
-                  textTransform: "uppercase",
-                  fontWeight: "bold",
-                  fontSize: 20,
-                  letterSpacing: "1px",
-                }}
-              >
-                Pnuemocast.
+            <MenuItem>
+              <div className="flex">
+                <img src={lung_cancer} style={{ height: "40px" }} />
+                <div className="mt-1">Pneumocast.</div>
               </div>
             </MenuItem>
           )}
-
+          <MenuItem
+            icon={<MenuIcon />}
+            onClick={handleToggleCollapse}
+            className="mt-10"
+          />
           <MenuItem icon={<GridViewRounded />} component={<Link to="/" />}>
             Dashboard
           </MenuItem>
-
           <MenuItem
             icon={<SettingsApplicationsRounded />}
             component={<Link to="/setting" />}
           >
             Setting
           </MenuItem>
-
           <MenuItem
             icon={<BarChartRounded />}
             component={<Link to="/visualisation" />}
           >
             Data Visualisation
           </MenuItem>
-
           <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
             Patient
           </MenuItem>
-
           <MenuItem
             icon={<PsychologyOutlinedIcon />}
             component={<Link to="/prediction" />}
           >
             Prediction
           </MenuItem>
-
           <MenuItem
             icon={<LogoutRounded />}
             onClick={() => {
@@ -127,10 +123,14 @@ const UserSideBar = () => {
           >
             Logout
           </MenuItem>
+
+          <MenuItem>
+            <div className="text-slate-400"></div>
+          </MenuItem>
         </Menu>
       </Sidebar>
       <Outlet />
-    </div>
+    </>
   );
 };
 
