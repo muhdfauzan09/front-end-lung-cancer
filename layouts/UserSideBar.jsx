@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useStore from "../useStore";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Outlet, Link } from "react-router-dom";
@@ -7,9 +8,11 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
-import lung_cancer from "../src/assets/lung_cancer_logo.png";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ModalComponent2 from "../components/ModalComponent2";
+import lung_cancer from "../src/assets/lung_cancer_logo.png";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
@@ -22,6 +25,7 @@ const UserSideBar = () => {
   const [collapsed, setCollapsed] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
 
+  const getUrlImage = useStore((state) => state.votes);
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
@@ -73,60 +77,73 @@ const UserSideBar = () => {
           }}
         >
           {collapsed ? (
-            <MenuItem>
-              <div>
-                <img src={lung_cancer} style={{ height: "33px" }} />
-              </div>
-            </MenuItem>
+            <MenuItem
+              icon={<MenuIcon />}
+              onClick={handleToggleCollapse}
+              className="mt-10"
+            />
           ) : (
-            <MenuItem>
+            <MenuItem suffix={<MenuOpenIcon />} onClick={handleToggleCollapse}>
               <div className="flex">
                 <img src={lung_cancer} style={{ height: "40px" }} />
                 <div className="mt-1">Pneumocast.</div>
               </div>
             </MenuItem>
           )}
-          <MenuItem
-            icon={<MenuIcon />}
-            onClick={handleToggleCollapse}
-            className="mt-10"
-          />
+
           <MenuItem icon={<GridViewRounded />} component={<Link to="/" />}>
             Dashboard
           </MenuItem>
-          <MenuItem
-            icon={<SettingsApplicationsRounded />}
-            component={<Link to="/setting" />}
-          >
-            Setting
-          </MenuItem>
+
           <MenuItem
             icon={<BarChartRounded />}
             component={<Link to="/visualisation" />}
           >
             Data Visualisation
           </MenuItem>
-          <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
-            Patient
-          </MenuItem>
+
           <MenuItem
             icon={<PsychologyOutlinedIcon />}
             component={<Link to="/prediction" />}
           >
             Prediction
           </MenuItem>
-          <MenuItem
-            icon={<LogoutRounded />}
-            onClick={() => {
-              setShow(true);
-            }}
-          >
-            Logout
+
+          <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
+            Patient
           </MenuItem>
 
-          <MenuItem>
-            <div className="text-slate-400"></div>
+          <MenuItem icon={<SettingsIcon />} component={<Link to="/setting" />}>
+            Setting
           </MenuItem>
+
+          <div style={{ marginTop: "330px" }}>
+            {collapsed ? (
+              <MenuItem
+                icon={<LogoutRounded />}
+                onClick={() => {
+                  setShow(true);
+                }}
+              >
+                Logout
+              </MenuItem>
+            ) : (
+              <MenuItem
+                suffix={<LogoutRounded />}
+                onClick={() => {
+                  setShow(true);
+                }}
+              >
+                <div className="flex p-2 bg-red-500">
+                  <img
+                    src={`http://127.0.0.1:5000/${getUrlImage}`}
+                    className="h-10"
+                  />
+                </div>
+                testsdds
+              </MenuItem>
+            )}
+          </div>
         </Menu>
       </Sidebar>
       <Outlet />
