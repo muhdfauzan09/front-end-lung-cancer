@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// Icons
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import ModalComponent from "../../components/ModalComponent";
 
@@ -13,7 +14,7 @@ const UserPrediction = () => {
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [cookies, removeCookie] = useCookies(["userToken"]); // Access Cookies
+  const [cookies, removeCookie] = useCookies(["userToken"]);
   const {
     register,
     handleSubmit,
@@ -373,10 +374,10 @@ const UserPrediction = () => {
                     </button>
                   ) : (
                     <button
-                      className="bg-blue-800 hover:bg-blue-600 text-center px-14 py-3 font-bold text-white rounded-lg text-xl"
+                      className="px-14 py-3 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
                       type="submit"
                     >
-                      Predictions
+                      Predict
                     </button>
                   )}
                 </div>

@@ -1,30 +1,31 @@
 import * as React from "react";
+import { useForm } from "react-hook-form";
 
-// Icons
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableViewIcon from "@mui/icons-material/TableView";
 import LineVisualisation from "../../components/LineVisualisation";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 
-const rows = [
-  { name: "Food1", calories: 200, fat: 10, carbs: 20, protein: 15 },
-  { name: "Food2", calories: 300, fat: 15, carbs: 25, protein: 18 },
-  { name: "Food3", calories: 150, fat: 8, carbs: 15, protein: 12 },
-  { name: "Food4", calories: 250, fat: 12, carbs: 22, protein: 17 },
-  { name: "Food5", calories: 180, fat: 9, carbs: 18, protein: 14 },
-  { name: "Food6", calories: 320, fat: 20, carbs: 30, protein: 25 },
-  { name: "Food7", calories: 280, fat: 18, carbs: 28, protein: 20 },
-  { name: "Food8", calories: 200, fat: 12, carbs: 24, protein: 16 },
-  { name: "Food9", calories: 150, fat: 8, carbs: 12, protein: 10 },
-  { name: "Food10", calories: 350, fat: 25, carbs: 35, protein: 30 },
-];
+// Icons
+import TableViewIcon from "@mui/icons-material/TableView";
 
 const AdminDatavisualisation = () => {
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm();
+
+  // Functions
+  const filterDataVisualisation = (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="flex">
@@ -39,12 +40,49 @@ const AdminDatavisualisation = () => {
               <BarChartOutlinedIcon className="text-cyan-300" /> Data
               Visualisation
             </div>
+
             <div className="col-span-3 md:p-14 sm:p-7 bg-white rounded-2xl">
-              <LineVisualisation />
+              <form onSubmit={handleSubmit(filterDataVisualisation)}>
+                <div className="flex justify-evenly mb-12">
+                  <select
+                    {...register("class", { required: true })}
+                    className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Lung Cancer
+                    </option>
+                    <option value="Positive">Positive</option>
+                    <option value="Negative">Negative</option>
+                  </select>
+
+                  <input
+                    placeholder="MM/DD/YYYY"
+                    type="month"
+                    className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                    {...register("startDate", { required: true })}
+                  />
+
+                  <input
+                    placeholder="End Date"
+                    type="month"
+                    className="shadow border rounded w-1/4 py-3 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                    {...register("endDate", { required: true })}
+                  />
+
+                  <input
+                    type="submit"
+                    value="Filter"
+                    className="bg-blue-700 hover:bg-blue-500 py-3 px-10 text-white rounded"
+                  />
+                </div>
+
+                <LineVisualisation />
+              </form>
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <div className="font-bold mb-1 text-lg">
               <TableViewIcon className="text-cyan-300" /> Data Visualisation
             </div>
@@ -81,7 +119,7 @@ const AdminDatavisualisation = () => {
                 </Table>
               </TableContainer>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

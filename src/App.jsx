@@ -1,18 +1,17 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "../pages/login";
 import NotFound from "../pages/NotFound";
 import UserSideBar from "../layouts/UserSideBar";
 import NotAuthorized from "../pages/NotAuthorized";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // User
 import UserSetting from "../pages/User/UserSetting";
-import UserRegister from "../pages/User/UserRegister";
 import UserDashboard from "../pages/User/UserDashboard";
 import UserPrediction from "../pages/User/UserPrediction";
 import UserPatientList from "../pages/User/UserPatientList";
 import UserViewPatient from "../pages/User/UserViewPatient";
 import UserDataVisualisation from "../pages/User/UserDataVisualisation";
+// import Test from "../pages/User/Test";
 
 // Admin
 import AdminView from "../pages/Admin/AdminView";
@@ -29,7 +28,6 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<UserRegister />} />
         <Route path="/" element={<UserSideBar />}>
           <Route index element={<UserDashboard />} />
           <Route path="setting" element={<UserSetting />} />

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useStore from "../useStore";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Outlet, Link } from "react-router-dom";
@@ -7,7 +8,11 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 // Icons
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import SettingsIcon from "@mui/icons-material/Settings";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ModalComponent2 from "../components/ModalComponent2";
+import lung_cancer from "../src/assets/lung_cancer_logo.png";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
@@ -18,17 +23,18 @@ const UserSideBar = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
 
+  const getUrlImage = useStore((state) => state.votes);
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
 
   return (
-    <div className="flex">
+    <>
       <ModalComponent2
         showModal={show}
-        message="Are you sure you want to logout ?"
+        message="Are you sure you want to logout?"
         route={() => {
           removeCookie("userToken");
           navigate("/login");
@@ -43,48 +49,50 @@ const UserSideBar = () => {
       <Sidebar
         collapsed={collapsed}
         backgroundColor="#1f40af"
-        width="340px"
-        style={{ position: "fixed", top: "0", bottom: "0" }}
+        width="350px"
+        style={{
+          position: "fixed",
+          top: "0",
+          bottom: "0",
+        }}
       >
         <Menu
-          className={collapsed ? "py-2" : "px-4 py-2"}
+          className={collapsed ? "mt-10" : "px-4 py-6 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
-              // only apply styles on first level elements of the tree
               if (level === 0)
                 return {
-                  paddingBlock: active ? "20px" : "42px",
-                  color: active ? "#ffffff" : "#ffffff",
-                  backgroundColor: active ? "#ffffff" : "1f40af",
-                  fontWeight: "bolder",
+                  fontWeight: "bold",
                   fontSize: "larger",
+                  color: active ? "#1f40af" : "#ffffff",
+                  paddingBlock: active ? "20px" : "42px",
                   "&:hover": {
-                    backgroundColor: "white !important",
                     color: "black !important",
-                    borderRadius: collapsed ? "0" : "10px !important",
                     fontWeight: "bolder !important",
+                    backgroundColor: "white !important",
+                    borderRadius: active ? "15px" : "10px !important",
                   },
                 };
             },
           }}
         >
-          <MenuItem
-            className={collapsed ? "pt-10 text-white" : "pt-10 text-white"}
-            icon={<MenuIcon />}
-            onClick={() => {
-              handleToggleCollapse();
-            }}
-          ></MenuItem>
+          {collapsed ? (
+            <MenuItem
+              icon={<MenuIcon />}
+              onClick={handleToggleCollapse}
+              className="mt-10"
+            />
+          ) : (
+            <MenuItem suffix={<MenuOpenIcon />} onClick={handleToggleCollapse}>
+              <div className="flex">
+                <img src={lung_cancer} style={{ height: "40px" }} />
+                <div className="mt-1">Pneumocast.</div>
+              </div>
+            </MenuItem>
+          )}
 
           <MenuItem icon={<GridViewRounded />} component={<Link to="/" />}>
             Dashboard
-          </MenuItem>
-
-          <MenuItem
-            icon={<SettingsApplicationsRounded />}
-            component={<Link to="/setting" />}
-          >
-            Setting
           </MenuItem>
 
           <MenuItem
@@ -94,10 +102,6 @@ const UserSideBar = () => {
             Data Visualisation
           </MenuItem>
 
-          <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
-            Patient
-          </MenuItem>
-
           <MenuItem
             icon={<PsychologyOutlinedIcon />}
             component={<Link to="/prediction" />}
@@ -105,18 +109,45 @@ const UserSideBar = () => {
             Prediction
           </MenuItem>
 
-          <MenuItem
-            icon={<LogoutRounded />}
-            onClick={() => {
-              setShow(true);
-            }}
-          >
-            Logout
+          <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
+            Patient
           </MenuItem>
+
+          <MenuItem icon={<SettingsIcon />} component={<Link to="/setting" />}>
+            Setting
+          </MenuItem>
+
+          <div style={{ marginTop: "330px" }}>
+            {collapsed ? (
+              <MenuItem
+                icon={<LogoutRounded />}
+                onClick={() => {
+                  setShow(true);
+                }}
+              >
+                Logout
+              </MenuItem>
+            ) : (
+              <MenuItem
+                suffix={<LogoutRounded />}
+                onClick={() => {
+                  setShow(true);
+                }}
+              >
+                <div className="flex p-2 bg-red-500">
+                  <img
+                    src={`http://127.0.0.1:5000/${getUrlImage}`}
+                    className="h-10"
+                  />
+                </div>
+                testsdds
+              </MenuItem>
+            )}
+          </div>
         </Menu>
       </Sidebar>
       <Outlet />
-    </div>
+    </>
   );
 };
 
