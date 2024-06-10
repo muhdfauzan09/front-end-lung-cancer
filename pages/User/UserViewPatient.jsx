@@ -6,7 +6,6 @@ import { useNavigate, useParams, Link } from "react-router-dom";
 
 // Icons
 import PhotoIcon from "@mui/icons-material/Photo";
-import PersonIcon from "@mui/icons-material/Person";
 import ModalComponent from "../../components/ModalComponent";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 
@@ -83,7 +82,7 @@ const UserViewPatient = () => {
               <div>
                 <div className="font-bold mb-1 text-lg">
                   <LocalHospitalIcon className="text-cyan-300 mr-1" />
-                  Patient Feature
+                  Patient Detail and Features
                 </div>
                 <div className="bg-white p-12 rounded-2xl">
                   <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6 mb-20">

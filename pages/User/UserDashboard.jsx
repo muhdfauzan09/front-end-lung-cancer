@@ -10,21 +10,19 @@ import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import LineVisualisation from "../../components/LineVisualisation";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PageviewIcon from "@mui/icons-material/Pageview";
 import useStore from "../../../front-end/useStore";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import TableContainer from "@mui/material/TableContainer";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import LineVisualisation from "../../components/LineVisualisation";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [userList, setUserList] = useState([]);
   const [pieChart, setPieChart] = useState([]);
   const [user, setUser, userRef] = useState({});
-  const votes = useStore((state) => state.votes);
-  const setVotes = useStore((state) => state.setVotes);
   const [cookies, removeCookies] = useCookies(["userToken"]);
   const [visualisation, setVisualisation, refVisualisation] = useState({
     months: [],
@@ -42,7 +40,6 @@ const UserDashboard = () => {
         const user_detail = res.data;
         const user_list = res.data.patient_list;
         const data = res.data.patient_count_by_month_list;
-
         const months = data.map((item) => item.month);
         const positiveCounts = data.map((item) => item.positive);
         const negativeCounts = data.map((item) => item.negative);
@@ -59,7 +56,6 @@ const UserDashboard = () => {
           positive_patient_count: positiveCounts,
           negative_patient_count: negativeCounts,
         });
-        setVotes(user_detail.user_image_profile);
       })
       .catch((err) => {
         if (err.response && err.response.status === 401) {
@@ -67,18 +63,16 @@ const UserDashboard = () => {
           navigate("/login");
         }
       });
-  }, [cookies, removeCookies, navigate, setVotes]);
+  }, [cookies, removeCookies, navigate]);
 
   return (
     <div className="flex">
       <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-36 w-screen">
-        <h1>{votes} people have cast their votes</h1>
-
         <div className="flex justify-end mb-2">
           {userRef.current.user_image_profile == null ? (
             <div className="flex">
               <AccountCircleRoundedIcon className="text-blue-700 mr-3 mt-1" />
-              <h1 className="font-bold text-lg">{user.user_data}</h1>
+              <h1 className="font-bold text-lg">{user.user_email}</h1>
             </div>
           ) : (
             <div className="flex">
@@ -87,7 +81,7 @@ const UserDashboard = () => {
                 alt="patient image"
                 className="rounded-full h-10 w-10 mr-5"
               />
-              <h1 className="font-bold text-lg mt-2">{user.user_data}</h1>
+              <h1 className="font-bold text-lg mt-2">{user.user_email}</h1>
             </div>
           )}
         </div>

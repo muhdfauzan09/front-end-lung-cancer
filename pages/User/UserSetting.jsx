@@ -1,17 +1,13 @@
+import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
-import { Spinner, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { Spinner, Modal } from "react-bootstrap";
 
-// Components
-import Api from "../../axiosConfig";
+// Component and Icon
 import ModalComponent from "../../components/ModalComponent";
-
-// Icons
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
-import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
 
 const UserSetting = () => {
   const [user, setUser] = useState({});
@@ -66,8 +62,7 @@ const UserSetting = () => {
 
   const addUserProfile = (event) => {
     const formData = new FormData();
-    formData.append("file", event.target.files[0]); // Apend the selected file
-
+    formData.append("file", event.target.files[0]);
     Api.post("/user/post/add_user_profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -88,8 +83,7 @@ const UserSetting = () => {
 
   const editUserProfile = (event) => {
     const formData = new FormData();
-    formData.append("file", event.target.files[0]); // Append the selected file
-
+    formData.append("file", event.target.files[0]);
     Api.post("/user/post/edit_user_profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",

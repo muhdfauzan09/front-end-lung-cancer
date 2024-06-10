@@ -1,31 +1,52 @@
-import { useState } from "react";
-import useStore from "../useStore";
+import Api from "../../front-end/axiosConfig";
 import { useCookies } from "react-cookie";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Outlet, Link } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 
-// Icons
+// Icons and components
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ModalComponent2 from "../components/ModalComponent2";
 import lung_cancer from "../src/assets/lung_cancer_logo.png";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyRounded";
-import SettingsApplicationsRounded from "@mui/icons-material/SettingsApplicationsRounded";
 
 const UserSideBar = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState({
+    name: "",
+    imageUrl: "",
+  });
   const [show, setShow] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
 
-  const getUrlImage = useStore((state) => state.votes);
+  useEffect(() => {
+    Api.get("/user/sidebar/get-info", {
+      headers: {
+        Authorization: "Bearer " + cookies["userToken"],
+      },
+    }).then((res) => {
+      // Capitalize the name
+      const capitalizedName = res.data.data.user_first_name
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      setData({
+        name: capitalizedName,
+        imageUrl: res.data.data.user_profile_image,
+      });
+    });
+  }, []);
+
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
@@ -49,7 +70,7 @@ const UserSideBar = () => {
       <Sidebar
         collapsed={collapsed}
         backgroundColor="#1f40af"
-        width="350px"
+        width="380px"
         style={{
           position: "fixed",
           top: "0",
@@ -117,7 +138,7 @@ const UserSideBar = () => {
             Setting
           </MenuItem>
 
-          <div style={{ marginTop: "330px" }}>
+          <div style={{ marginTop: "320px" }}>
             {collapsed ? (
               <MenuItem
                 icon={<LogoutRounded />}
@@ -134,13 +155,21 @@ const UserSideBar = () => {
                   setShow(true);
                 }}
               >
-                <div className="flex p-2 bg-red-500">
+                <div className="flex pr-3 py-3">
                   <img
-                    src={`http://127.0.0.1:5000/${getUrlImage}`}
-                    className="h-10"
+                    src={`http://127.0.0.1:5000/${data.imageUrl}`}
+                    style={{
+                      height: "60px",
+                      borderRadius: "10px",
+                      marginRight: "10px",
+                    }}
                   />
+
+                  <div>
+                    <p>{data.name}</p>
+                    <p>Doctor</p>
+                  </div>
                 </div>
-                testsdds
               </MenuItem>
             )}
           </div>
