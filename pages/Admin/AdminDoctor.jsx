@@ -10,10 +10,10 @@ import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
+import TableContainer from "@mui/material/TableContainer";
 
 // Icons
 import PageviewIcon from "@mui/icons-material/Pageview";
-import TableContainer from "@mui/material/TableContainer";
 
 const AdminDoctor = () => {
   const navigate = useNavigate();
@@ -26,36 +26,44 @@ const AdminDoctor = () => {
   });
 
   useEffect(() => {
-    Api.get("/admin/doctor/list", {
-      headers: {
-        Authorization: `Bearer ${cookies.adminToken}`,
-      },
-    })
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await Api.get("/admin/doctor/list", {
+          headers: {
+            Authorization: `Bearer ${cookies.adminToken}`,
+          },
+        });
         setDoctors(res.data.data);
-      })
-      .catch((err) => {
-        if (err.response.data.status === 401) {
+      } catch (err) {
+        if (err.response && err.response.data.status === 401) {
           removeCookie("adminToken");
           navigate("/NotAuthorized");
         }
-      });
-  }, [cookies, removeCookie]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [cookies.adminToken, removeCookie, navigate]);
 
   // Function
-  const find_doctor = () => {
-    setLoading(true);
-    setTimeout(() => {
-      Api.post("/admin/doctor/list", findDoctor, {
+  const findDoctorHandler = async () => {
+    try {
+      setLoading(true);
+      const res = await Api.post("/admin/doctor/list", findDoctor, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.adminToken}`,
         },
-      }).then((res) => {
-        setDoctors(res.data.data);
-        setLoading(false);
       });
-    });
+      setDoctors(res.data.data);
+    } catch (error) {
+      console.error("Error fetching doctors:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,7 +105,7 @@ const AdminDoctor = () => {
                       })
                     }
                   >
-                    <option selected disabled value="3">
+                    <option disabled value="3">
                       Department :
                     </option>
                     <option value="1">Clinic</option>
@@ -121,7 +129,7 @@ const AdminDoctor = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={find_doctor}
+                      onClick={findDoctorHandler}
                       className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
                     >
                       Find
@@ -151,11 +159,26 @@ const AdminDoctor = () => {
                           <TableRow
                             key={item.department_id}
                             sx={{
-                              "td,th": { borderBottom: "1", padding: 3 },
+                              "td,th": {
+                                borderBottom: "1px solid #ddd",
+                                padding: 3,
+                              },
                             }}
                           >
                             <TableCell align="left">
-                              {item.user_first_name} {item.user_last_name}
+                              <div className="flex">
+                                <img
+                                  src={`http://127.0.0.1:5000/${item.user_profile_image}`}
+                                  style={{
+                                    height: "50px",
+                                    borderRadius: "100%",
+                                    marginRight: "1rem",
+                                  }}
+                                />
+                                <div className="mt-3">
+                                  {item.user_first_name} {item.user_last_name}
+                                </div>
+                              </div>
                             </TableCell>
                             <TableCell align="left">
                               {item.department_name}
