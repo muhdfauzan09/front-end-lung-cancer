@@ -149,6 +149,11 @@ const UserSetting = () => {
                             Upload Image Profile
                           </div>
                         </label>
+                        <div className="font-semibold text-sm text-slate-400">
+                          #The image can only be submitted if it is in either
+                          JPG or JPEG format. Other file types will not be
+                          accepted.
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -158,7 +163,7 @@ const UserSetting = () => {
                           <img
                             src={`http://127.0.0.1:5000/${user.user_profile_image}`}
                             alt="patient image"
-                            className="rounded-full h-36 w-36"
+                            className="rounded-full h-36 w-36 border-2 border-blue-100"
                           />
                           <input
                             accept="image/*"

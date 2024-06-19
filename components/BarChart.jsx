@@ -19,6 +19,14 @@ const BarChart = ({ result }) => {
         display: false,
       },
     },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0,
+        },
+      },
+    },
   };
 
   return (

@@ -1,7 +1,7 @@
 import Api from "../../axiosConfig";
 import React, { useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Components and Icons
 import Table from "@mui/material/Table";
@@ -170,7 +170,8 @@ const UserDashboard = () => {
                     <TableCell align="left">Address 1</TableCell>
                     <TableCell align="left">Address 2</TableCell>
                     <TableCell align="left">Postcode</TableCell>
-                    <TableCell align="left">Lung Cancer</TableCell>
+                    <TableCell align="left">Early Detection</TableCell>
+                    <TableCell align="left">Image Class</TableCell>
                     <TableCell align="left">Action</TableCell>
                   </TableRow>
                 </TableHead>
@@ -183,7 +184,7 @@ const UserDashboard = () => {
                       <TableCell component="th" scope="row">
                         <span
                           className={`${
-                            row.lung_cancer === 0
+                            row.image_class === "Negative"
                               ? "bg-green-600"
                               : "bg-red-500"
                           } mr-2 rounded-full px-[3px]`}
@@ -209,7 +210,22 @@ const UserDashboard = () => {
                         </div>
                       </TableCell>
                       <TableCell align="left">
-                        <PageviewIcon className="text-blue-700" />
+                        <div
+                          className={`${
+                            row.image_class === "Negative"
+                              ? "text-green-600 font-bold"
+                              : "text-red-600 font-bold"
+                          }`}
+                        >
+                          {row.image_class === "Negative"
+                            ? "Negative"
+                            : "Positive"}
+                        </div>
+                      </TableCell>
+                      <TableCell align="left">
+                        <Link to={`view/patient/${row.patient_id}`}>
+                          <PageviewIcon className="text-blue-700" />{" "}
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}

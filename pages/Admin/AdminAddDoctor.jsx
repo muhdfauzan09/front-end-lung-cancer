@@ -163,9 +163,7 @@ const AdminAddDoctor = () => {
                       })}
                       className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:outline-offset-5 focus:shadow-outline"
                     >
-                      <option disabled selected>
-                        Select department type :
-                      </option>
+                      <option disabled>Select department type :</option>
                       <option value="1">Clinic</option>
                       <option value="2">Hospital</option>
                     </select>

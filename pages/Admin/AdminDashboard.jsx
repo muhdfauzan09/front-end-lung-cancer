@@ -188,7 +188,7 @@ const AdminDashboard = () => {
               Visualisation
             </div>
             <div className="grid grid-cols-7 gap-10">
-              <div className="col-span-5 p-5 bg-white rounded-2xl">
+              <div className="col-span-7 p-5 bg-white rounded-2xl">
                 <LineVisualisation
                   label={refVisualisation.current.months}
                   graphDataPositive={
@@ -199,7 +199,7 @@ const AdminDashboard = () => {
                   }
                 />
               </div>
-              <div className="col-span-2 p-14 bg-white rounded-2xl text-center">
+              {/* <div className="col-span-2 p-14 bg-white rounded-2xl text-center">
                 <PieVisualisation pieData={pieChart} />
                 <div className="text-rose-500 font-bold mt-3">
                   Positive : {user.total_positive_count}
@@ -210,7 +210,7 @@ const AdminDashboard = () => {
                 <div className="text-yellow-400 font-bold">
                   Not Diagnose : {user.total_not_count}
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

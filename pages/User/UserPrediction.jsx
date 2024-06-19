@@ -131,10 +131,10 @@ const UserPrediction = () => {
                         {...register("gender", {
                           required: "Gender is Required",
                         })}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
                         type="text"
                       >
-                        <option selected disabled hidden>
+                        <option selected disabled value={""}>
                           --Choose Gender--
                         </option>
                         <option value="Male">Male</option>

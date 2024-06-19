@@ -185,7 +185,7 @@ const UserDataVisualisation = () => {
                       <input
                         type="submit"
                         value="Filter"
-                        className="py-3 px-10 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-semibold  rounded"
+                        className="py-2 px-9 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded"
                       />
                     </div>
                   </form>

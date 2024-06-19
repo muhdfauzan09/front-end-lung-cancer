@@ -10,8 +10,7 @@ const ModalComponent = ({ showModal, message, route }) => {
         </Modal.Body>
         <Modal.Footer>
           <div
-            className="px-14 py-3 font-bold text-white rounded-lg"
-            style={{ backgroundColor: "#034CA1", cursor: "pointer" }}
+            className="py-2 px-5 bg-blue-800 hover:bg-blue-600 text-white font-bold rounded-lg cursor-pointer"
             onClick={() => route()}
           >
             OK

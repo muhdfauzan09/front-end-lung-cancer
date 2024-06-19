@@ -105,6 +105,7 @@ const Test = ({ data }) => {
             </TableBody>
           </Table>
         </TableContainer>
+
         <div className="flex justify-end mt-4">
           <span className="mt-3 font-semibold">
             Page {currentPage} of {totalPages}, {data.length} Patients

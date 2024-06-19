@@ -108,7 +108,7 @@ const UserPatientList = () => {
 
                   {loading ? (
                     <button
-                      className="py-2 px-4 bg-blue-800 hover:bg-blue-600 text-white font-bold  rounded"
+                      className="py-2 px-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded"
                       disabled
                     >
                       <Spinner
@@ -125,7 +125,7 @@ const UserPatientList = () => {
                     <input
                       value="Find"
                       type="submit"
-                      className="py-2 px-4 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold  rounded"
+                      className="py-2 px-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded"
                     />
                   )}
                 </div>

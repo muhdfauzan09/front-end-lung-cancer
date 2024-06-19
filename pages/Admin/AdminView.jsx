@@ -116,18 +116,20 @@ const AdminView = () => {
           <div className="grid grid-cols-6 gap-12">
             <div className="col-span-4 grid grid-cols-7 p-10 bg-white rounded-2xl">
               <div className="col-span-2 border-r-4">
-                {doctor.user_profile_image ? (
-                  <img
-                    src={`http://127.0.0.1:5000/${doctor.user_profile_image}`}
-                    alt="patient image"
-                    className="rounded-full w-40 mb-10"
-                  />
-                ) : (
-                  <AccountCircleIcon
-                    className="text-gray-300"
-                    style={{ fontSize: "150px", marginBottom: "2px" }}
-                  />
-                )}
+                <div className="flex flex-col items-start">
+                  {doctor.user_profile_image ? (
+                    <img
+                      src={`http://127.0.0.1:5000/${doctor.user_profile_image}`}
+                      alt="patient image"
+                      className="rounded-full w-40 mb-10"
+                    />
+                  ) : (
+                    <AccountCircleIcon
+                      className="text-gray-300"
+                      style={{ fontSize: "150px", marginBottom: "2px" }}
+                    />
+                  )}
+                </div>
 
                 <div>
                   <p className="font-bold">Doctor's Name :</p>
@@ -229,34 +231,32 @@ const AdminView = () => {
 
             {/* Patient Detail */}
             <div className="col-span-2">
-              <div className="p-10 h-full bg-white rounded-2xl">
+              <div className="p-10 h-full bg-white rounded-2xl grid grid-rows-5 text-center">
                 <div>
-                  <p className="text-md text-gray-500">Total Patient :</p>
-                  <p className="text-lg font-bold">40</p>
+                  <p className="text-3xl font-bold">40</p>
+                  <p className="text-md text-gray-500">Total Patient</p>
                 </div>
-                <div className="mt-2">
-                  <p className="text-md text-gray-500">
-                    Total Patient (Male) :
-                  </p>
-                  <p className="text-lg font-bold">20</p>
+                <div>
+                  <p className="text-3xl font-bold">40</p>
+                  <p className="text-md text-gray-500">Total Patient (Male)</p>
                 </div>
-                <div className="mt-2">
+                <div>
+                  <p className="text-3xl font-bold">40</p>
                   <p className="text-md text-gray-500">
-                    Total Patient (Female) :
+                    Total Patient (Female)
                   </p>
-                  <p className="text-lg font-bold">20</p>
                 </div>
-                <div className="mt-2">
+                <div>
+                  <p className="text-3xl font-bold">20</p>
                   <p className="text-md text-gray-500">
-                    Total Patient (Positive) :
+                    Total Patient (Positive)
                   </p>
-                  <p className="text-lg font-bold">20</p>
                 </div>
-                <div className="mt-2">
+                <div>
+                  <p className="text-3xl font-bold">20</p>
                   <p className="text-md text-gray-500">
-                    Total Patient (Negative) :
+                    Total Patient (Negative)
                   </p>
-                  <p className="text-lg font-bold">20</p>
                 </div>
               </div>
             </div>
