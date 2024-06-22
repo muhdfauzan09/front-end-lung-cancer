@@ -6,8 +6,10 @@ import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 // Import Icon
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import ModalComponent2 from "../components/ModalComponent2";
+import lung_cancer from "../src/assets/lung_cancer_logo.png";
 import LogoutRounded from "@mui/icons-material/LoginRounded";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
@@ -40,39 +42,49 @@ const AdminSideBar = () => {
       />
       <Sidebar
         collapsed={collapsed}
-        backgroundColor="#034CA1"
-        width="340px"
-        style={{ position: "fixed", top: "0", bottom: "0" }}
+        backgroundColor="#1f40af"
+        width="380px"
+        style={{
+          position: "fixed",
+          top: "0",
+          bottom: "0",
+        }}
       >
         <Menu
-          className={collapsed ? "py-2" : "px-4 py-2"}
+          className={collapsed ? "mt-10" : "px-4 py-6 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
-              // only apply styles on first level elements of the tree
               if (level === 0)
                 return {
-                  paddingBlock: active ? "20px" : "40px",
-                  color: active ? "#ffffff" : "#ffffff",
-                  backgroundColor: active ? "#ffffff" : "#034CA1",
-                  fontWeight: "bolder",
+                  fontWeight: "bold",
                   fontSize: "larger",
+                  color: active ? "#1f40af" : "#ffffff",
+                  paddingBlock: active ? "20px" : "42px",
                   "&:hover": {
-                    backgroundColor: "white !important",
                     color: "black !important",
-                    borderRadius: collapsed ? "0" : "10px !important",
                     fontWeight: "bolder !important",
+                    backgroundColor: "white !important",
+                    borderRadius: active ? "15px" : "10px !important",
                   },
                 };
             },
           }}
         >
-          <MenuItem
-            className={collapsed ? "pt-10 text-white" : "pt-10 text-white"}
-            icon={<MenuIcon />}
-            onClick={() => {
-              handleToggleCollapse();
-            }}
-          ></MenuItem>
+          {collapsed ? (
+            <MenuItem
+              icon={<MenuIcon />}
+              onClick={handleToggleCollapse}
+              className="mt-10"
+            />
+          ) : (
+            <MenuItem suffix={<MenuOpenIcon />} onClick={handleToggleCollapse}>
+              <div className="flex">
+                <img src={lung_cancer} style={{ height: "40px" }} />
+                <div className="mt-1">Pneumocast.</div>
+              </div>
+            </MenuItem>
+          )}
+
           <MenuItem icon={<GridViewRounded />} component={<Link to="/admin" />}>
             Dashboard
           </MenuItem>

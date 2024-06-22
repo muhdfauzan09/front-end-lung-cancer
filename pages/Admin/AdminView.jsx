@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams, Link } from "react-router-dom";
 
 import Api from "../../axiosConfig";
-import useState from "react-usestateref";
 import Table from "@mui/material/Table";
+import useState from "react-usestateref";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
@@ -14,10 +14,10 @@ import TableContainer from "@mui/material/TableContainer";
 import LineVisualisation from "../../components/LineVisualisation";
 
 // Icons
-import GroupIcon from "@mui/icons-material/Group";
-import PersonIcon from "@mui/icons-material/Person";
+import Person2Icon from "@mui/icons-material/Person2";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 
 const AdminView = () => {
   const navigate = useNavigate();
@@ -45,6 +45,8 @@ const AdminView = () => {
       negative_patient_count: [],
     });
 
+  const [count, setCount, refCount] = useState({});
+
   useEffect(() => {
     const fetchData = async () => {
       Api.get(`/admin/view/${id}`, {
@@ -54,6 +56,7 @@ const AdminView = () => {
       })
         .then((res) => {
           setDoctor(res.data.user);
+          setCount(res.data.patient_count);
           setDepartment(res.data.department[0]);
         })
         .catch((error) => {
@@ -113,159 +116,178 @@ const AdminView = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-6 gap-12">
-            <div className="col-span-4 grid grid-cols-7 p-10 bg-white rounded-2xl">
-              <div className="col-span-2 border-r-4">
-                <div className="flex flex-col items-start">
-                  {doctor.user_profile_image ? (
-                    <img
-                      src={`http://127.0.0.1:5000/${doctor.user_profile_image}`}
-                      alt="patient image"
-                      className="rounded-full w-40 mb-10"
-                    />
-                  ) : (
-                    <AccountCircleIcon
-                      className="text-gray-300"
-                      style={{ fontSize: "150px", marginBottom: "2px" }}
-                    />
-                  )}
-                </div>
-
-                <div>
-                  <p className="font-bold">Doctor's Name :</p>
-                  <div>
-                    {doctor.user_first_name} {doctor.user_last_name}
-                  </div>
-                </div>
-
-                <div>
-                  <p className="font-bold mt-3"> Phone Number :</p>
-                  <div> {doctor.user_phone_number}</div>
-                </div>
-
-                <div>
-                  <p className="font-bold mt-3"> Email :</p>
-                  <div>{doctor.user_email}</div>
-                </div>
-
-                <div>
-                  <p className="font-bold mt-3"> Status :</p>
-                  <div className="font-bold text-green-700">Approved</div>
-                </div>
+          <div className="grid grid-cols-2 gap-12">
+            {/* Data Overview */}
+            <div className="col-span-2 mb-2">
+              <div className="font-bold mb-1 text-lg">
+                <BubbleChartIcon className="text-cyan-300 mr-1" />
+                Data Overview
               </div>
-
-              <div className="grid grid-cols-2 col-span-5 p-8 gap-4">
+              <div className="p-6 bg-white rounded-2xl flex justify-around text-center">
                 <div>
-                  <p className="font-bold">Department Name :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={department.department_name}
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
+                  <p className="mb-2 text-4xl font-bold text-blue-700">
+                    {refCount.current.get_patient_count}
+                  </p>
+                  <p className="text-md text-gray-500">Total Patient</p>
                 </div>
-
                 <div>
-                  <p className="font-bold">Department Name :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={department.department_name}
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
+                  <p className="mb-2 text-4xl font-bold text-blue-700">
+                    {refCount.current.get_male_count}
+                  </p>
+                  <p className="text-md text-gray-500">Patient (Male)</p>
                 </div>
-
                 <div>
-                  <p className="font-bold">Department Type :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={
-                      department.department_id === 1 ? "Clinic" : "Hospital"
-                    }
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
+                  <p className="mb-2 text-4xl font-bold text-blue-700">
+                    {refCount.current.get_female_count}
+                  </p>
+                  <p className="text-md text-gray-500">Patient (Female)</p>
                 </div>
-
                 <div>
-                  <p className="font-bold">Department (Address) :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={department.department_address}
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
+                  <p className="mb-2 text-4xl font-bold text-blue-700">
+                    {refCount.current.get_positive_count}
+                  </p>
+                  <p className="text-md text-gray-500">Patient (Positive)</p>
                 </div>
-
                 <div>
-                  <p className="font-bold">Department (City) :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={department.city}
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
-                </div>
-
-                <div>
-                  <p className="font-bold">Department (zipCode) :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={department.zipcode}
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
-                </div>
-
-                <div>
-                  <p className="font-bold">Department (State) :</p>
-                  <input
-                    disabled
-                    type="text"
-                    value={department.state}
-                    className="mt-3 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
-                  />
+                  <p className="mb-2 text-4xl font-bold text-blue-700">
+                    {refCount.current.get_negative_count}
+                  </p>
+                  <p className="text-md text-gray-500">Patient (Negative)</p>
                 </div>
               </div>
             </div>
 
-            {/* Patient Detail */}
-            <div className="col-span-2">
-              <div className="p-10 h-full bg-white rounded-2xl grid grid-rows-5 text-center">
-                <div>
-                  <p className="text-3xl font-bold">40</p>
-                  <p className="text-md text-gray-500">Total Patient</p>
+            {/* Doctor Details */}
+            <div className="col-span-2 mb-16">
+              <div className="font-bold mb-1 text-lg">
+                <Person2Icon className="text-cyan-300 mr-1" />
+                Doctor Details
+              </div>
+              <div className="grid grid-cols-5 p-10 bg-white rounded-2xl">
+                <div className="col-span-1 border-r-4">
+                  <div>
+                    {doctor.user_profile_image ? (
+                      <img
+                        src={`http://127.0.0.1:5000/${doctor.user_profile_image}`}
+                        alt="patient image"
+                        className="rounded-full mb-10 border-2 border-blue-100"
+                        style={{
+                          height: "200px",
+                          width: "200px",
+                        }}
+                      />
+                    ) : (
+                      <AccountCircleIcon
+                        className="text-gray-300"
+                        style={{ fontSize: "150px", marginBottom: "2px" }}
+                      />
+                    )}
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Doctor's Name :</p>
+                    <div>
+                      {doctor.user_first_name} {doctor.user_last_name}
+                    </div>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mt-3"> Phone Number :</p>
+                    <div> {doctor.user_phone_number}</div>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mt-3"> Email :</p>
+                    <div>{doctor.user_email}</div>
+                  </div>
+
+                  <div>
+                    <p className="font-bold mt-3"> Status :</p>
+                    <div className="font-bold text-green-700">Approved</div>
+                  </div>
                 </div>
-                <div>
-                  <p className="text-3xl font-bold">40</p>
-                  <p className="text-md text-gray-500">Total Patient (Male)</p>
-                </div>
-                <div>
-                  <p className="text-3xl font-bold">40</p>
-                  <p className="text-md text-gray-500">
-                    Total Patient (Female)
-                  </p>
-                </div>
-                <div>
-                  <p className="text-3xl font-bold">20</p>
-                  <p className="text-md text-gray-500">
-                    Total Patient (Positive)
-                  </p>
-                </div>
-                <div>
-                  <p className="text-3xl font-bold">20</p>
-                  <p className="text-md text-gray-500">
-                    Total Patient (Negative)
-                  </p>
+
+                <div className="grid grid-cols-2 col-span-4 p-8 gap-x-7">
+                  <div>
+                    <p className="font-bold">Department Name :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={department.department_name}
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Department Name :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={department.department_name}
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Department Type :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={
+                        department.department_id === 1 ? "Clinic" : "Hospital"
+                      }
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Department (Address) :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={department.department_address}
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Department (City) :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={department.city}
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Department (zipCode) :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={department.zipcode}
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="font-bold">Department (State) :</p>
+                    <input
+                      disabled
+                      type="text"
+                      value={department.state}
+                      className="mt-1 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Data Visualisation */}
-          <div className="mt-20">
+          <div>
             <div className="font-bold mb-1 text-lg">
-              <GroupIcon className="text-cyan-300 mr-1" />
+              <EqualizerIcon className="text-cyan-300 mr-1" />
               Data Visualisation
             </div>
             <form onSubmit={handleSubmit(filterDataVisualisation)}>

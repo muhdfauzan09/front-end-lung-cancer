@@ -175,12 +175,12 @@ const UserSetting = () => {
                         </div>
                         <div className="mt-auto mb-auto ml-10">
                           <label htmlFor="icon-button-file">
-                            <div className="px-3 py-2 my-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md">
+                            <div className="px-3 py-2 my-2 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-md">
                               Change Image Profile
                             </div>
                           </label>
                           <label htmlFor="icon-button-file" className="ml-5">
-                            <div className="px-3 py-2 border-2 border-blue-400  bg-slate-50 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md ">
+                            <div className="px-3 py-2 border-2 border-blue-400  bg-slate-100 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md ">
                               Delete
                             </div>
                           </label>
@@ -307,7 +307,7 @@ const UserSetting = () => {
                 </div>
                 <div className="text-center mt-4 cursor-pointer">
                   <div
-                    className="px-3 py-3 my-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
+                    className="px-3 py-3 my-2 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-md"
                     onClick={() => setShowPasswordModal(true)}
                   >
                     Change Password

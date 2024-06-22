@@ -2,6 +2,7 @@ import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,16 +14,20 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import TableContainer from "@mui/material/TableContainer";
+import ModalComponent from "../../components/ModalComponent";
 
 const AdminDepartment = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [cookies, removeCookie] = useCookies(["adminToken"]);
-  const [findDepartment, setFindDepartment] = useState({
-    department: "",
-    departmentName: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
     Api.get("/admin/department/list", {
@@ -42,23 +47,34 @@ const AdminDepartment = () => {
   }, [cookies, removeCookie]);
 
   // Functions
-  const find_department = () => {
+  const find_department = (data) => {
     setLoading(true);
-    setTimeout(() => {
-      Api.post("/admin/department/list", findDepartment, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.adminToken}`,
-        },
-      }).then((res) => {
+    Api.post("/admin/department/list", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${cookies.adminToken}`,
+      },
+    })
+      .then((res) => {
         setDepartments(res.data.data);
         setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setModalShow(true);
+        setModalMessage(err.response.data.msg);
       });
-    }, 1000);
   };
 
   return (
     <>
+      <ModalComponent
+        showModal={modalShow}
+        message={modalMessage}
+        route={() => {
+          setModalShow(false);
+        }}
+      />
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <div>
@@ -72,60 +88,54 @@ const AdminDepartment = () => {
             <div className="bg-white p-16 rounded-2xl">
               {/* Filter Input */}
               <div>
-                <div className="grid grid-cols-6 sm:gap-8">
-                  <input
-                    className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
-                    type="text"
-                    value={findDepartment.departmentName}
-                    placeholder="Department Name"
-                    onChange={(e) =>
-                      setFindDepartment({
-                        ...findDepartment,
-                        departmentName: e.target.value,
-                      })
-                    }
-                  />
-                  <select
-                    className="col-span-1 shadow border w-full text-lg rounded-lg focus:outline-blue-800 p-2.5"
-                    value={findDepartment.department}
-                    onChange={(e) =>
-                      setFindDepartment({
-                        ...findDepartment,
-                        department: e.target.value,
-                      })
-                    }
-                  >
-                    <option value="" selected disabled>
-                      Department :
-                    </option>
-                    <option value="1">Clinic</option>
-                    <option value="2">Hospital</option>
-                  </select>
+                <form onSubmit={handleSubmit(find_department)}>
+                  <div className="grid grid-cols-6 sm:gap-8">
+                    <input
+                      className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
+                      type="text"
+                      placeholder="Department Name"
+                      {...register("departmentName", {
+                        required: "Full name is required",
+                      })}
+                    />
+                    <select
+                      className="col-span-1 shadow border w-full text-lg rounded-lg focus:outline-blue-800 p-2.5"
+                      {...register("department", {
+                        required: "Department is required",
+                      })}
+                    >
+                      <option value="" selected>
+                        Department:
+                      </option>
+                      <option value="1">Clinic</option>
+                      <option value="2">Hospital</option>
+                    </select>
 
-                  {loading ? (
-                    <button
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                      disabled
-                    >
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                        className="mr-2"
-                      />
-                      Loading...
-                    </button>
-                  ) : (
-                    <button
-                      onClick={find_department}
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Find
-                    </button>
-                  )}
-                </div>
+                    {loading ? (
+                      <button
+                        className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                        disabled
+                      >
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          className="mr-2"
+                        />
+                        Loading...
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Find
+                      </button>
+                    )}
+                  </div>
+                </form>
               </div>
 
               {/* Table */}
@@ -146,7 +156,7 @@ const AdminDepartment = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {departments.map((item) => (
+                        {departments.map((item, id) => (
                           <TableRow
                             key={item.department_id}
                             sx={{

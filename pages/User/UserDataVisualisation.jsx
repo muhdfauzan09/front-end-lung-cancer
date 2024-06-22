@@ -22,6 +22,7 @@ import LineVisualisation from "../../components/LineVisualisation";
 // Icons
 import PageviewIcon from "@mui/icons-material/Pageview";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import TableComponentvs from "../../components/TableComponentVS";
 
 const UserDataVisualisation = () => {
   const navigate = useNavigate();
@@ -224,76 +225,10 @@ const UserDataVisualisation = () => {
                 </div>
 
                 {refFindVisualisation.current.patientList.length !== 0 && (
-                  <div className="bg-white p-10 rounded-2xl mt-6">
-                    <TableContainer className="rounded-xl">
-                      <Table sx={{ minWidth: 650 }}>
-                        <TableHead className="bg-gray-100">
-                          <TableRow>
-                            <TableCell align="center">Patient Name</TableCell>
-                            <TableCell align="center">Patient Gender</TableCell>
-                            <TableCell align="center">
-                              Patient Phone Number
-                            </TableCell>
-                            <TableCell align="center">
-                              Early Detection
-                            </TableCell>
-                            <TableCell align="center">Image Class</TableCell>
-                            <TableCell align="center">
-                              Date Application Image
-                            </TableCell>
-                            <TableCell align="center">Action</TableCell>
-                          </TableRow>
-                        </TableHead>
-
-                        <TableBody>
-                          {refFindVisualisation.current.patientList.map(
-                            (row, index) => (
-                              <TableRow key={index}>
-                                <TableCell>{row.patient_name}</TableCell>
-                                <TableCell align="center">
-                                  {row.patient_gender}
-                                </TableCell>
-                                <TableCell align="center">
-                                  {row.patient_phone_number}
-                                </TableCell>
-                                <TableCell align="center">
-                                  <div
-                                    className={`${
-                                      row.lung_cancer === 0
-                                        ? "text-green-600 font-bold"
-                                        : "text-red-600 font-bold"
-                                    }`}
-                                  >
-                                    {row.lung_cancer === 0
-                                      ? "Negative"
-                                      : "Positive"}
-                                  </div>
-                                </TableCell>
-                                <TableCell align="center">
-                                  <div
-                                    className={`${
-                                      row.image_class === "Negative"
-                                        ? "text-green-600 font-bold"
-                                        : "text-red-600 font-bold"
-                                    }`}
-                                  >
-                                    {row.image_class}
-                                  </div>
-                                </TableCell>
-                                <TableCell align="center">
-                                  {row.image_date_classification}
-                                </TableCell>
-                                <TableCell align="center">
-                                  <Link to={`/view/patient/${row.patient_id}`}>
-                                    <PageviewIcon className="text-blue-800" />
-                                  </Link>
-                                </TableCell>
-                              </TableRow>
-                            )
-                          )}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
+                  <div className="bg-white p-10 rounded-2xl mt-10">
+                    <TableComponentvs
+                      data={refFindVisualisation.current.patientList}
+                    />
                   </div>
                 )}
               </Tab>

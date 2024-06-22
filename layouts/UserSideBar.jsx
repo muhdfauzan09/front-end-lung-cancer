@@ -16,6 +16,7 @@ import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyRounded";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const UserSideBar = () => {
   const navigate = useNavigate();
@@ -135,7 +136,7 @@ const UserSideBar = () => {
           </MenuItem>
 
           <MenuItem icon={<SettingsIcon />} component={<Link to="/setting" />}>
-            Setting
+            Account Setting
           </MenuItem>
 
           <div style={{ marginTop: "320px" }}>
@@ -156,14 +157,25 @@ const UserSideBar = () => {
                 }}
               >
                 <div className="flex pr-3 py-3">
-                  <img
-                    src={`http://127.0.0.1:5000/${data.imageUrl}`}
-                    style={{
-                      height: "60px",
-                      borderRadius: "10px",
-                      marginRight: "10px",
-                    }}
-                  />
+                  {data.imageUrl ? (
+                    <img
+                      src={`http://127.0.0.1:5000/${data.imageUrl}`}
+                      style={{
+                        height: "60px",
+                        borderRadius: "10px",
+                        marginRight: "10px",
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <AccountCircleRoundedIcon
+                        className="text-slate-700 mr-3 mt-1"
+                        style={{
+                          fontSize: "50px",
+                        }}
+                      />
+                    </>
+                  )}
 
                   <div>
                     <p>{data.name}</p>
