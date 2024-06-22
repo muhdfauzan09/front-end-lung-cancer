@@ -395,7 +395,7 @@ const UserSetting = () => {
                       <div>
                         {loading ? (
                           <button
-                            className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
+                            className="px-3 py-2 bg-slate-200 hover:bg-blue-400 text-blue-500 font-bold rounded-md mr-4"
                             disabled
                           >
                             <Spinner

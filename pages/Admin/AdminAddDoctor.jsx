@@ -163,7 +163,9 @@ const AdminAddDoctor = () => {
                       })}
                       className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:outline-offset-5 focus:shadow-outline"
                     >
-                      <option disabled>Select department type :</option>
+                      <option selected disabled value={""}>
+                        Select department type :
+                      </option>
                       <option value="1">Clinic</option>
                       <option value="2">Hospital</option>
                     </select>
@@ -233,7 +235,7 @@ const AdminAddDoctor = () => {
                       className="shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800 focus:shadow-outline"
                       type="text"
                     >
-                      <option selected disabled>
+                      <option selected disabled value={""}>
                         Choose state :
                       </option>
                       {states.map(({ value, label }, index) => (
@@ -274,7 +276,7 @@ const AdminAddDoctor = () => {
                       })}
                       className="shadow border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
                     >
-                      <option selected disabled>
+                      <option selected disabled value={""}>
                         Choose District :
                       </option>
                       {district.map(({ value, label }, index) => (
