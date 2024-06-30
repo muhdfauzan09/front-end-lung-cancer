@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCookies } from "react-cookie";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate, useLocation } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 
 // Import Icon
@@ -17,6 +17,7 @@ import BarChartRounded from "@mui/icons-material/BarChartRounded";
 
 const AdminSideBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [show, setShow] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -25,6 +26,8 @@ const AdminSideBar = () => {
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
+
+  const isActiveRoute = (path) => location.pathname === path;
 
   return (
     <div className="flex">
@@ -54,19 +57,33 @@ const AdminSideBar = () => {
           className={collapsed ? "mt-10" : "px-4 py-6 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
-              if (level === 0)
-                return {
-                  fontWeight: "bold",
-                  fontSize: "larger",
-                  color: active ? "#1f40af" : "#ffffff",
-                  paddingBlock: active ? "20px" : "42px",
-                  "&:hover": {
-                    color: "black !important",
-                    fontWeight: "bolder !important",
-                    backgroundColor: "white !important",
-                    borderRadius: active ? "15px" : "10px !important",
-                  },
-                };
+              const activeStyle = {
+                color: "black",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                "&:hover": {
+                  color: "black !important",
+                  backgroundColor: "white !important",
+                },
+              };
+
+              return level === 0
+                ? {
+                    fontWeight: "bold",
+                    fontSize: "larger",
+                    paddingBlock: "42px",
+                    ...(active
+                      ? activeStyle
+                      : {
+                          color: "white",
+                          "&:hover": {
+                            color: "black !important",
+                            backgroundColor: "white !important",
+                            borderRadius: "10px !important",
+                          },
+                        }),
+                  }
+                : {};
             },
           }}
         >
@@ -85,30 +102,43 @@ const AdminSideBar = () => {
             </MenuItem>
           )}
 
-          <MenuItem icon={<GridViewRounded />} component={<Link to="/admin" />}>
+          <MenuItem
+            icon={<GridViewRounded />}
+            component={<Link to="/admin" />}
+            active={isActiveRoute("/admin")}
+            onClick={() => setCollapsed(true)}
+          >
             Dashboard
           </MenuItem>
           <MenuItem
             icon={<BarChartRounded />}
             component={<Link to="/admin/visualisation" />}
+            active={isActiveRoute("/admin/visualisation")}
+            onClick={() => setCollapsed(true)}
           >
             Data Visualisation
           </MenuItem>
           <MenuItem
             icon={<ApartmentIcon />}
             component={<Link to="/admin/department" />}
+            active={isActiveRoute("/admin/department")}
+            onClick={() => setCollapsed(true)}
           >
             Department List
           </MenuItem>
           <MenuItem
             icon={<GroupsIcon />}
             component={<Link to="/admin/doctor" />}
+            active={isActiveRoute("/admin/doctor")}
+            onClick={() => setCollapsed(true)}
           >
             Doctor List
           </MenuItem>
           <MenuItem
             icon={<PersonAddAlt1Icon />}
             component={<Link to="/admin/add/doctor" />}
+            active={isActiveRoute("/admin/add/doctor")}
+            onClick={() => setCollapsed(true)}
           >
             Add Doctor
           </MenuItem>

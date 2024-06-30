@@ -1,8 +1,8 @@
 import Api from "../../front-end/axiosConfig";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Outlet, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 
 // Icons and components
@@ -20,6 +20,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const UserSideBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState({
     name: "",
     imageUrl: "",
@@ -52,6 +53,8 @@ const UserSideBar = () => {
     setCollapsed(!collapsed);
   };
 
+  const isActiveRoute = (path) => location.pathname === path;
+
   return (
     <>
       <ModalComponent2
@@ -82,19 +85,33 @@ const UserSideBar = () => {
           className={collapsed ? "mt-10" : "px-4 py-6 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
-              if (level === 0)
-                return {
-                  fontWeight: "bold",
-                  fontSize: "larger",
-                  color: active ? "#1f40af" : "#ffffff",
-                  paddingBlock: active ? "20px" : "42px",
-                  "&:hover": {
-                    color: "black !important",
-                    fontWeight: "bolder !important",
-                    backgroundColor: "white !important",
-                    borderRadius: active ? "15px" : "10px !important",
-                  },
-                };
+              const activeStyle = {
+                color: "black",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                "&:hover": {
+                  color: "black !important",
+                  backgroundColor: "white !important",
+                },
+              };
+
+              return level === 0
+                ? {
+                    fontWeight: "bold",
+                    fontSize: "larger",
+                    paddingBlock: "42px",
+                    ...(active
+                      ? activeStyle
+                      : {
+                          color: "white",
+                          "&:hover": {
+                            color: "black !important",
+                            backgroundColor: "white !important",
+                            borderRadius: "10px !important",
+                          },
+                        }),
+                  }
+                : {};
             },
           }}
         >
@@ -113,13 +130,20 @@ const UserSideBar = () => {
             </MenuItem>
           )}
 
-          <MenuItem icon={<GridViewRounded />} component={<Link to="/" />}>
+          <MenuItem
+            icon={<GridViewRounded />}
+            component={<Link to="/" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/")}
+          >
             Dashboard
           </MenuItem>
 
           <MenuItem
             icon={<BarChartRounded />}
             component={<Link to="/visualisation" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/visualisation")}
           >
             Data Visualisation
           </MenuItem>
@@ -127,15 +151,27 @@ const UserSideBar = () => {
           <MenuItem
             icon={<PsychologyOutlinedIcon />}
             component={<Link to="/prediction" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/prediction")}
           >
             Prediction
           </MenuItem>
 
-          <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
+          <MenuItem
+            icon={<GroupsIcon />}
+            component={<Link to="/patient" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/patient")}
+          >
             Patient
           </MenuItem>
 
-          <MenuItem icon={<SettingsIcon />} component={<Link to="/setting" />}>
+          <MenuItem
+            icon={<SettingsIcon />}
+            component={<Link to="/setting" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/setting")}
+          >
             Account Setting
           </MenuItem>
 

@@ -87,7 +87,7 @@ const UserPatientList = () => {
           </div>
 
           <div>
-            <div className="bg-white p-16 rounded-2xl">
+            <div className="bg-white p-14 rounded-2xl">
               <form onSubmit={handleSubmit(find_patient)}>
                 {/* Filter Input */}
                 <div className="grid md:grid-cols-6 md:gap-6 sm:grid-cols-1 sm:gap-6">

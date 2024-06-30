@@ -58,8 +58,8 @@ const Test = ({ data }) => {
                     <span
                       className={`${
                         row.image_class === "Negative"
-                          ? "bg-green-600"
-                          : "bg-red-500"
+                          ? "bg-green-400"
+                          : "bg-red-400"
                       } mr-2 rounded-full px-2`}
                     />
                     {row.patient_name.toUpperCase()}
@@ -73,31 +73,33 @@ const Test = ({ data }) => {
                   </TableCell>
                   <TableCell align="center">{row.patient_address2}</TableCell>
                   <TableCell align="center">{row.patient_postcode}</TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" style={{ paddingInline: "10px" }}>
                     <div
                       className={`${
                         row.lung_cancer === 0
-                          ? "text-green-600 font-bold"
-                          : "text-red-600 font-bold"
+                          ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                          : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
                       }`}
                     >
                       {row.lung_cancer === 0 ? "Negative" : "Positive"}
                     </div>
                   </TableCell>
-                  <TableCell align="center">
+                  <TableCell align="center" style={{ paddingInline: "30px" }}>
                     <div
                       className={`${
-                        row.image_class === "Negative"
-                          ? "text-green-600 font-bold"
-                          : "text-red-600 font-bold"
+                        row.image_class === null
+                          ? ""
+                          : row.image_class === "Negative"
+                          ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                          : "text-red-600 font-bold py-1 bg-red-200 rounded-md"
                       }`}
                     >
-                      {row.image_class}
+                      {row.image_class === null ? "" : row.image_class}
                     </div>
                   </TableCell>
                   <TableCell align="center">
                     <Link to={`/view/patient/${row.patient_id}`}>
-                      <PageviewIcon className="text-blue-800" />
+                      <PageviewIcon className="text-blue-800 hover:text-blue-500" />
                     </Link>
                   </TableCell>
                 </TableRow>

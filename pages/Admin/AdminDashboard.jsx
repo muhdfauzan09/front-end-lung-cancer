@@ -84,28 +84,28 @@ const AdminDashboard = () => {
               <BarChartOutlinedIcon className="text-cyan-300" /> Data Overview
               (Patient)
             </div>
-            <div className="grid sm:grid-cols-1 md:grid-cols-3 p-4 text-center bg-white rounded-2xl">
+            <div className="grid sm:grid-cols-1 md:grid-cols-3 p-3 text-center bg-white rounded-2xl">
               <div className="border-r-4 border-slate-300">
-                <p className="text-green-600 text-5xl mb-3 font-bold ">
+                <p className="text-green-600 text-5xl mb-2 font-bold ">
                   {user.total_patient_count}
                 </p>
-                <p className="text-slate-300 text-2xl text-center font-semibold ">
+                <p className="text-slate-300 text-xl text-center font-semibold ">
                   Patient
                 </p>
               </div>
               <div className="border-r-4 border-slate-300">
-                <p className="text-green-600 text-5xl mb-3 font-bold ">
+                <p className="text-green-600 text-5xl mb-2 font-bold ">
                   {user.male_patient_count}
                 </p>
-                <p className="text-slate-300 text-2xl text-center font-semibold">
+                <p className="text-slate-300 text-xl text-center font-semibold">
                   Male
                 </p>
               </div>
               <div className="">
-                <p className="text-green-600 text-5xl mb-3 font-bold ">
+                <p className="text-green-600 text-5xl mb-2 font-bold ">
                   {user.female_patient_count}
                 </p>
-                <p className="text-slate-300 text-2xl text-center font-semibold">
+                <p className="text-slate-300 text-xl text-center font-semibold">
                   Female
                 </p>
               </div>
@@ -117,28 +117,28 @@ const AdminDashboard = () => {
               <BarChartOutlinedIcon className="text-cyan-300" /> Data Overview
               (Result Diagnosed)
             </div>
-            <div className="grid sm:grid-cols-1 md:grid-cols-3 p-4 text-center bg-white rounded-2xl">
+            <div className="grid sm:grid-cols-1 md:grid-cols-3 p-3 text-center bg-white rounded-2xl">
               <div className="border-r-4 border-slate-300">
-                <p className="text-red-600 text-5xl mb-3 font-bold ">
+                <p className="text-red-600 text-5xl mb-2 font-bold ">
                   {user.total_positive_count}
                 </p>
-                <p className="text-slate-300 text-2xl text-center font-semibold">
+                <p className="text-slate-300 text-xl text-center font-semibold">
                   Positive
                 </p>
               </div>
               <div className="border-r-4 border-slate-300">
-                <p className="text-red-600 text-5xl mb-3 font-bold ">
+                <p className="text-red-600 text-5xl mb-2 font-bold ">
                   {user.total_negative_count}
                 </p>
-                <p className="text-slate-300 text-2xl text-center font-semibold">
+                <p className="text-slate-300 text-xl text-center font-semibold">
                   Negative
                 </p>
               </div>
               <div className="">
-                <p className="text-red-600 text-5xl mb-3 font-bold ">
+                <p className="text-red-600 text-5xl mb-2 font-bold ">
                   {user.total_not_count}
                 </p>
-                <p className="text-slate-300 text-2xl text-center font-semibold">
+                <p className="text-slate-300 text-xl text-center font-semibold">
                   Not Diagnosed
                 </p>
               </div>
@@ -151,32 +151,32 @@ const AdminDashboard = () => {
               <BarChartOutlinedIcon className="text-cyan-300" /> Data Overview
               (Department & Doctor)
             </div>
-            <div className="grid p-4 sm:grid-cols-1 md:grid-cols-4 bg-white text-center rounded-2xl">
+            <div className="grid p-3 sm:grid-cols-1 md:grid-cols-4 bg-white text-center rounded-2xl">
               <div className="border-r-4 border-slate-300">
-                <p className="text-blue-600 text-5xl mb-3 font-bold">
+                <p className="text-blue-600 text-5xl mb-2 font-bold">
                   {user.total_department}
                 </p>
-                <p className="text-slate-300 text-2xl font-semibold ">
+                <p className="text-slate-300 text-xl font-semibold ">
                   Departments
                 </p>
               </div>
               <div className="border-r-4 border-slate-300">
-                <p className="text-blue-600 text-5xl mb-3 font-bold ">
+                <p className="text-blue-600 text-5xl mb-2 font-bold ">
                   {user.total_user}
                 </p>
-                <p className="text-slate-300 text-2xl font-semibold">Doctors</p>
+                <p className="text-slate-300 text-xl font-semibold">Doctors</p>
               </div>
               <div className="border-r-4 border-slate-300">
-                <p className="text-blue-600 text-5xl mb-3 font-bold ">
+                <p className="text-blue-600 text-5xl mb-2 font-bold ">
                   {user.female_patient_count}
                 </p>
-                <p className="text-slate-300 text-2xl font-semibold">Female</p>
+                <p className="text-slate-300 text-xl font-semibold">Female</p>
               </div>
               <div className="">
-                <p className="text-blue-600 text-5xl mb-3 font-bold ">
+                <p className="text-blue-600 text-5xl mb-2 font-bold ">
                   {user.female_patient_count}
                 </p>
-                <p className="text-slate-300 text-2xl font-semibold">Female</p>
+                <p className="text-slate-300 text-xl font-semibold">Female</p>
               </div>
             </div>
           </div>

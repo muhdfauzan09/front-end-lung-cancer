@@ -14,12 +14,15 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import PageviewIcon from "@mui/icons-material/Pageview";
 import TableContainer from "@mui/material/TableContainer";
+import ModalComponent from "../../components/ModalComponent";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const AdminDoctor = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [cookies, removeCookie] = useCookies(["adminToken"]);
   const {
     register,
@@ -65,11 +68,20 @@ const AdminDoctor = () => {
       })
       .catch((err) => {
         setLoading(false);
+        setModalShow(true);
+        setModalMessage(err.response.data.msg);
       });
   };
 
   return (
     <>
+      <ModalComponent
+        showModal={modalShow}
+        message={modalMessage}
+        route={() => {
+          setModalShow(false);
+        }}
+      />
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <div>
@@ -124,7 +136,7 @@ const AdminDoctor = () => {
                       </button>
                     ) : (
                       <button
-                        onClick={findDoctorHandler}
+                        type="submit"
                         className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
                       >
                         Find

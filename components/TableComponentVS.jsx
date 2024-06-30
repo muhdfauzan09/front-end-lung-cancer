@@ -68,19 +68,19 @@ const TableComponentvs = ({ data }) => {
                   <div
                     className={`${
                       row.lung_cancer === 0
-                        ? "text-green-600 font-bold"
-                        : "text-red-600 font-bold"
+                        ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                        : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
                     }`}
                   >
                     {row.lung_cancer === 0 ? "Negative" : "Positive"}
                   </div>
                 </TableCell>
-                <TableCell align="center">
+                <TableCell align="center" style={{ paddingInline: "40px" }}>
                   <div
                     className={`${
                       row.image_class === "Negative"
-                        ? "text-green-600 font-bold"
-                        : "text-red-600 font-bold"
+                        ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                        : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
                     }`}
                   >
                     {row.image_class}
@@ -91,7 +91,7 @@ const TableComponentvs = ({ data }) => {
                 </TableCell>
                 <TableCell align="center">
                   <Link to={`/view/patient/${row.patient_id}`}>
-                    <PageviewIcon className="text-blue-800" />
+                    <PageviewIcon className="text-blue-800 hover:text-blue-500" />
                   </Link>
                 </TableCell>
               </TableRow>

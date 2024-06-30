@@ -165,14 +165,14 @@ const UserDashboard = () => {
                 <TableHead className="bg-gray-100">
                   <TableRow>
                     <TableCell>Full Name</TableCell>
-                    <TableCell align="left">Gender</TableCell>
-                    <TableCell align="left">Phone Number</TableCell>
-                    <TableCell align="left">Address 1</TableCell>
-                    <TableCell align="left">Address 2</TableCell>
-                    <TableCell align="left">Postcode</TableCell>
-                    <TableCell align="left">Early Detection</TableCell>
-                    <TableCell align="left">Image Class</TableCell>
-                    <TableCell align="left">Action</TableCell>
+                    <TableCell align="center">Gender</TableCell>
+                    <TableCell align="center">Phone Number</TableCell>
+                    <TableCell align="center">Address 1</TableCell>
+                    <TableCell align="center">Address 2</TableCell>
+                    <TableCell align="center">Postcode</TableCell>
+                    <TableCell align="center">Early Detection</TableCell>
+                    <TableCell align="center">Image Classication</TableCell>
+                    <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -191,30 +191,39 @@ const UserDashboard = () => {
                         />
                         {row.patient_name}
                       </TableCell>
-                      <TableCell align="left">{row.patient_gender}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.patient_gender}</TableCell>
+                      <TableCell align="center">
                         {row.patient_phone_number}
                       </TableCell>
-                      <TableCell align="left">{row.patient_address1}</TableCell>
-                      <TableCell align="left">{row.patient_address2}</TableCell>
-                      <TableCell align="left">{row.patient_postcode}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
+                        {row.patient_address1}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.patient_address2}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.patient_postcode}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ paddingInline: "10px" }}
+                      >
                         <div
                           className={`${
                             row.lung_cancer === 0
-                              ? "text-green-600 font-bold"
-                              : "text-red-600 font-bold"
+                              ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                              : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
                           }`}
                         >
                           {row.lung_cancer === 0 ? "Negative" : "Positive"}
                         </div>
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         <div
                           className={`${
                             row.image_class === "Negative"
-                              ? "text-green-600 font-bold"
-                              : "text-red-600 font-bold"
+                              ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                              : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
                           }`}
                         >
                           {row.image_class === "Negative"
@@ -222,9 +231,10 @@ const UserDashboard = () => {
                             : "Positive"}
                         </div>
                       </TableCell>
+
                       <TableCell align="left">
                         <Link to={`view/patient/${row.patient_id}`}>
-                          <PageviewIcon className="text-blue-700" />{" "}
+                          <PageviewIcon className="text-blue-700 hover:text-blue-400" />{" "}
                         </Link>
                       </TableCell>
                     </TableRow>
