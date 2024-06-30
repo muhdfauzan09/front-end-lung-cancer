@@ -1,17 +1,13 @@
+import Api from "../../axiosConfig";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useCookies } from "react-cookie";
-import { Spinner, Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { Spinner, Modal } from "react-bootstrap";
 
-// Components
-import Api from "../../axiosConfig";
+// Component and Icon
 import ModalComponent from "../../components/ModalComponent";
-
-// Icons
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ApartmentRoundedIcon from "@mui/icons-material/ApartmentRounded";
-import EnhancedEncryptionIcon from "@mui/icons-material/EnhancedEncryption";
 
 const UserSetting = () => {
   const [user, setUser] = useState({});
@@ -66,8 +62,7 @@ const UserSetting = () => {
 
   const addUserProfile = (event) => {
     const formData = new FormData();
-    formData.append("file", event.target.files[0]); // Apend the selected file
-
+    formData.append("file", event.target.files[0]);
     Api.post("/user/post/add_user_profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -88,8 +83,7 @@ const UserSetting = () => {
 
   const editUserProfile = (event) => {
     const formData = new FormData();
-    formData.append("file", event.target.files[0]); // Append the selected file
-
+    formData.append("file", event.target.files[0]);
     Api.post("/user/post/edit_user_profile", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -155,6 +149,11 @@ const UserSetting = () => {
                             Upload Image Profile
                           </div>
                         </label>
+                        <div className="font-semibold text-sm text-slate-400">
+                          #The image can only be submitted if it is in either
+                          JPG or JPEG format. Other file types will not be
+                          accepted.
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -164,7 +163,7 @@ const UserSetting = () => {
                           <img
                             src={`http://127.0.0.1:5000/${user.user_profile_image}`}
                             alt="patient image"
-                            className="rounded-full h-36 w-36"
+                            className="rounded-full h-36 w-36 border-2 border-blue-100"
                           />
                           <input
                             accept="image/*"
@@ -176,12 +175,12 @@ const UserSetting = () => {
                         </div>
                         <div className="mt-auto mb-auto ml-10">
                           <label htmlFor="icon-button-file">
-                            <div className="px-3 py-2 my-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md">
+                            <div className="px-3 py-2 my-2 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-md">
                               Change Image Profile
                             </div>
                           </label>
                           <label htmlFor="icon-button-file" className="ml-5">
-                            <div className="px-3 py-2 border-2 border-blue-400  bg-slate-50 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md ">
+                            <div className="px-3 py-2 border-2 border-blue-400  bg-slate-100 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md ">
                               Delete
                             </div>
                           </label>
@@ -308,7 +307,7 @@ const UserSetting = () => {
                 </div>
                 <div className="text-center mt-4 cursor-pointer">
                   <div
-                    className="px-3 py-3 my-2 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
+                    className="px-3 py-3 my-2 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded-md"
                     onClick={() => setShowPasswordModal(true)}
                   >
                     Change Password
@@ -396,7 +395,7 @@ const UserSetting = () => {
                       <div>
                         {loading ? (
                           <button
-                            className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded cursor-pointer"
+                            className="px-3 py-2 bg-slate-200 hover:bg-blue-400 text-blue-500 font-bold rounded-md mr-4"
                             disabled
                           >
                             <Spinner

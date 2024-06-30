@@ -1,65 +1,87 @@
 import Api from "../../axiosConfig";
-import { Link } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { useForm } from "react-hook-form";
 import { Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Components
 import Table from "@mui/material/Table";
 import TableRow from "@mui/material/TableRow";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
-
-// Icons
 import PageviewIcon from "@mui/icons-material/Pageview";
 import TableContainer from "@mui/material/TableContainer";
+import ModalComponent from "../../components/ModalComponent";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const AdminDoctor = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const [cookies, removeCookie] = useCookies(["adminToken"]);
-  const [findDoctor, setFindDoctor] = useState({
-    doctor: "3",
-    doctorName: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   useEffect(() => {
-    Api.get("/admin/doctor/list", {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const res = await Api.get("/admin/doctor/list", {
+          headers: {
+            Authorization: `Bearer ${cookies.adminToken}`,
+          },
+        });
+        setDoctors(res.data.data);
+      } catch (err) {
+        if (err.response && err.response.data.status === 401) {
+          removeCookie("adminToken");
+          navigate("/NotAuthorized");
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [cookies.adminToken, removeCookie, navigate]);
+
+  // Function
+  const findDoctorHandler = (data) => {
+    setLoading(true);
+    Api.post("/admin/doctor/list", data, {
       headers: {
+        "Content-Type": "application/json",
         Authorization: `Bearer ${cookies.adminToken}`,
       },
     })
       .then((res) => {
+        setLoading(false);
         setDoctors(res.data.data);
       })
       .catch((err) => {
-        if (err.response.data.status === 401) {
-          removeCookie("adminToken");
-          navigate("/NotAuthorized");
-        }
-      });
-  }, [cookies, removeCookie]);
-
-  // Function
-  const find_doctor = () => {
-    setLoading(true);
-    setTimeout(() => {
-      Api.post("/admin/doctor/list", findDoctor, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.adminToken}`,
-        },
-      }).then((res) => {
-        setDoctors(res.data.data);
         setLoading(false);
+        setModalShow(true);
+        setModalMessage(err.response.data.msg);
       });
-    });
   };
 
   return (
     <>
+      <ModalComponent
+        showModal={modalShow}
+        message={modalMessage}
+        route={() => {
+          setModalShow(false);
+        }}
+      />
       <div className="flex">
         <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-32 w-screen">
           <div>
@@ -72,63 +94,57 @@ const AdminDoctor = () => {
           <div>
             <div className="bg-white p-16 rounded-2xl">
               {/* Find Doctor / Department */}
-              <div>
-                <div className="grid grid-cols-6 sm:gap-8">
-                  <input
-                    className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
-                    placeholder="Doctor's Name"
-                    type="text"
-                    value={findDoctor.doctorName}
-                    onChange={(e) =>
-                      setFindDoctor({
-                        ...findDoctor,
-                        doctorName: e.target.value,
-                      })
-                    }
-                  />
-                  <select
-                    id="countries"
-                    className="col-span-1 shadow border w-full text-lg rounded-lg focus:outline-blue-800 p-2.5"
-                    value={findDoctor.doctor}
-                    onChange={(e) =>
-                      setFindDoctor({
-                        ...findDoctor,
-                        doctor: e.target.value,
-                      })
-                    }
-                  >
-                    <option selected disabled value="3">
-                      Department :
-                    </option>
-                    <option value="1">Clinic</option>
-                    <option value="2">Hospital</option>
-                  </select>
+              <form onSubmit={handleSubmit(findDoctorHandler)}>
+                <div>
+                  <div className="grid grid-cols-6 sm:gap-8">
+                    <input
+                      className="col-span-2 shadow border rounded w-full py-2 px-3 text-gray-700 focus:outline-blue-800  focus:shadow-outline"
+                      placeholder="Doctor's Name"
+                      type="text"
+                      {...register("doctorName", {
+                        required: "Full name is required",
+                      })}
+                    />
+                    <select
+                      id="countries"
+                      className="col-span-1 shadow border w-full text-lg rounded-lg focus:outline-blue-800 p-2.5"
+                      {...register("doctor", {
+                        required: "Full name is required",
+                      })}
+                    >
+                      <option selected value="">
+                        Department :
+                      </option>
+                      <option value="1">Clinic</option>
+                      <option value="2">Hospital</option>
+                    </select>
 
-                  {loading ? (
-                    <button
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                      disabled
-                    >
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                        className="mr-2"
-                      />
-                      Loading...
-                    </button>
-                  ) : (
-                    <button
-                      onClick={find_doctor}
-                      className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Find
-                    </button>
-                  )}
+                    {loading ? (
+                      <button
+                        className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                        disabled
+                      >
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                          className="mr-2"
+                        />
+                        Loading...
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        className="bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded"
+                      >
+                        Find
+                      </button>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </form>
 
               {/* Table */}
               <div>
@@ -147,21 +163,49 @@ const AdminDoctor = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {doctors.map((item) => (
+                        {doctors.map((item, id) => (
                           <TableRow
                             key={item.department_id}
                             sx={{
-                              "td,th": { borderBottom: "1", padding: 3 },
+                              "td,th": {
+                                borderBottom: "1px solid #ddd",
+                                padding: 3,
+                              },
                             }}
                           >
                             <TableCell align="left">
-                              {item.user_first_name} {item.user_last_name}
+                              <div className="flex">
+                                {item.user_profile_image ? (
+                                  <img
+                                    src={`http://127.0.0.1:5000/${item.user_profile_image}`}
+                                    style={{
+                                      height: "40px",
+                                      width: "40px",
+                                      borderRadius: "100%",
+                                      marginRight: "1rem",
+                                    }}
+                                  />
+                                ) : (
+                                  <>
+                                    <AccountCircleRoundedIcon
+                                      className="text-slate-300 mr-3 mt-1"
+                                      style={{ fontSize: "45px" }}
+                                    />
+                                  </>
+                                )}
+
+                                <div className="mt-3">
+                                  {item.user_first_name} {item.user_last_name}
+                                </div>
+                              </div>
                             </TableCell>
                             <TableCell align="left">
                               {item.department_name}
                             </TableCell>
                             <TableCell align="left">
-                              {item.department_id === 1 ? "CLINIC" : "HOSPITAL"}
+                              {item.department_type_id == 1
+                                ? "CLINIC"
+                                : "HOSPITAL"}
                             </TableCell>
                             <TableCell align="left">
                               {item.user_email}

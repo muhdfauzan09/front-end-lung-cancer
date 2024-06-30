@@ -6,13 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 
 // Components
 import Api from "../../axiosConfig";
-import Table from "@mui/material/Table";
-import TableRow from "@mui/material/TableRow";
-import TableHead from "@mui/material/TableHead";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
-import PageviewIcon from "@mui/icons-material/Pageview";
-import TableContainer from "@mui/material/TableContainer";
+import TableComponent from "../../components/TableComponent";
 import ModalComponent from "../../components/ModalComponent";
 
 const UserPatientList = () => {
@@ -93,7 +87,7 @@ const UserPatientList = () => {
           </div>
 
           <div>
-            <div className="bg-white p-16 rounded-2xl">
+            <div className="bg-white p-14 rounded-2xl">
               <form onSubmit={handleSubmit(find_patient)}>
                 {/* Filter Input */}
                 <div className="grid md:grid-cols-6 md:gap-6 sm:grid-cols-1 sm:gap-6">
@@ -114,7 +108,7 @@ const UserPatientList = () => {
 
                   {loading ? (
                     <button
-                      className="py-2 px-4 bg-blue-800 hover:bg-blue-600 text-white font-bold  rounded"
+                      className="py-2 px-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded"
                       disabled
                     >
                       <Spinner
@@ -131,7 +125,7 @@ const UserPatientList = () => {
                     <input
                       value="Find"
                       type="submit"
-                      className="py-2 px-4 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold  rounded"
+                      className="py-2 px-4 bg-blue-700 hover:bg-blue-600 text-white font-bold rounded"
                     />
                   )}
                 </div>
@@ -139,87 +133,7 @@ const UserPatientList = () => {
 
               {/* Table Patient */}
               <div>
-                <div className="mt-20">
-                  <TableContainer className="rounded-xl">
-                    <Table sx={{ minWidth: 650 }}>
-                      <TableHead className="bg-gray-100">
-                        <TableRow>
-                          <TableCell>Full Name</TableCell>
-                          <TableCell align="center">Gender</TableCell>
-                          <TableCell align="center">Phone Number</TableCell>
-                          <TableCell align="center">Address 1</TableCell>
-                          <TableCell align="center">Address 2</TableCell>
-                          <TableCell align="center">Postcode</TableCell>
-                          <TableCell align="center">Early Detection</TableCell>
-                          <TableCell align="center">
-                            Image Classifcation
-                          </TableCell>
-                          <TableCell align="center">Action</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {patient.map((row, index) => (
-                          <TableRow key={index}>
-                            <TableCell>
-                              <span
-                                className={`${
-                                  row.image_class === "Negative"
-                                    ? "bg-green-600"
-                                    : "bg-red-500"
-                                } mr-2 rounded-full px-2`}
-                              />
-                              {row.patient_name.toUpperCase()}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.patient_gender}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.patient_phone_number}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.patient_address1.toUpperCase()}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.patient_address2.toUpperCase()}
-                            </TableCell>
-                            <TableCell align="center">
-                              {row.patient_postcode}
-                            </TableCell>
-                            <TableCell align="center">
-                              <div
-                                className={`${
-                                  row.lung_cancer == 0
-                                    ? "text-green-600 font-bold"
-                                    : "text-red-600 font-bold"
-                                }`}
-                              >
-                                {row.lung_cancer === 0
-                                  ? "Negative"
-                                  : "Positive"}
-                              </div>
-                            </TableCell>
-                            <TableCell align="center">
-                              <div
-                                className={`${
-                                  row.image_class == "Negative"
-                                    ? "text-green-600 font-bold"
-                                    : "text-red-600 font-bold"
-                                }`}
-                              >
-                                {row.image_class}
-                              </div>
-                            </TableCell>
-                            <TableCell align="center">
-                              <Link to={`/view/patient/${row.patient_id}`}>
-                                <PageviewIcon className="text-blue-800" />
-                              </Link>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </div>
+                <TableComponent data={patient} />
               </div>
             </div>
           </div>

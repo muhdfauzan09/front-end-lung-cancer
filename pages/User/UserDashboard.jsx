@@ -1,7 +1,7 @@
 import Api from "../../axiosConfig";
 import React, { useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // Components and Icons
 import Table from "@mui/material/Table";
@@ -10,21 +10,19 @@ import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import LineVisualisation from "../../components/LineVisualisation";
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import PageviewIcon from "@mui/icons-material/Pageview";
 import useStore from "../../../front-end/useStore";
+import PageviewIcon from "@mui/icons-material/Pageview";
+import TableContainer from "@mui/material/TableContainer";
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import LineVisualisation from "../../components/LineVisualisation";
+import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [userList, setUserList] = useState([]);
   const [pieChart, setPieChart] = useState([]);
   const [user, setUser, userRef] = useState({});
-  const votes = useStore((state) => state.votes);
-  const setVotes = useStore((state) => state.setVotes);
   const [cookies, removeCookies] = useCookies(["userToken"]);
   const [visualisation, setVisualisation, refVisualisation] = useState({
     months: [],
@@ -42,7 +40,6 @@ const UserDashboard = () => {
         const user_detail = res.data;
         const user_list = res.data.patient_list;
         const data = res.data.patient_count_by_month_list;
-
         const months = data.map((item) => item.month);
         const positiveCounts = data.map((item) => item.positive);
         const negativeCounts = data.map((item) => item.negative);
@@ -59,7 +56,6 @@ const UserDashboard = () => {
           positive_patient_count: positiveCounts,
           negative_patient_count: negativeCounts,
         });
-        setVotes(user_detail.user_image_profile);
       })
       .catch((err) => {
         if (err.response && err.response.status === 401) {
@@ -67,18 +63,16 @@ const UserDashboard = () => {
           navigate("/login");
         }
       });
-  }, [cookies, removeCookies, navigate, setVotes]);
+  }, [cookies, removeCookies, navigate]);
 
   return (
     <div className="flex">
       <div className="sm:p-14 sm:pl-28 md:p-16 md:pl-36 w-screen">
-        <h1>{votes} people have cast their votes</h1>
-
         <div className="flex justify-end mb-2">
           {userRef.current.user_image_profile == null ? (
             <div className="flex">
               <AccountCircleRoundedIcon className="text-blue-700 mr-3 mt-1" />
-              <h1 className="font-bold text-lg">{user.user_data}</h1>
+              <h1 className="font-bold text-lg">{user.user_email}</h1>
             </div>
           ) : (
             <div className="flex">
@@ -87,7 +81,7 @@ const UserDashboard = () => {
                 alt="patient image"
                 className="rounded-full h-10 w-10 mr-5"
               />
-              <h1 className="font-bold text-lg mt-2">{user.user_data}</h1>
+              <h1 className="font-bold text-lg mt-2">{user.user_email}</h1>
             </div>
           )}
         </div>
@@ -171,13 +165,14 @@ const UserDashboard = () => {
                 <TableHead className="bg-gray-100">
                   <TableRow>
                     <TableCell>Full Name</TableCell>
-                    <TableCell align="left">Gender</TableCell>
-                    <TableCell align="left">Phone Number</TableCell>
-                    <TableCell align="left">Address 1</TableCell>
-                    <TableCell align="left">Address 2</TableCell>
-                    <TableCell align="left">Postcode</TableCell>
-                    <TableCell align="left">Lung Cancer</TableCell>
-                    <TableCell align="left">Action</TableCell>
+                    <TableCell align="center">Gender</TableCell>
+                    <TableCell align="center">Phone Number</TableCell>
+                    <TableCell align="center">Address 1</TableCell>
+                    <TableCell align="center">Address 2</TableCell>
+                    <TableCell align="center">Postcode</TableCell>
+                    <TableCell align="center">Early Detection</TableCell>
+                    <TableCell align="center">Image Classication</TableCell>
+                    <TableCell align="center">Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -189,33 +184,58 @@ const UserDashboard = () => {
                       <TableCell component="th" scope="row">
                         <span
                           className={`${
-                            row.lung_cancer === 0
+                            row.image_class === "Negative"
                               ? "bg-green-600"
                               : "bg-red-500"
                           } mr-2 rounded-full px-[3px]`}
                         />
                         {row.patient_name}
                       </TableCell>
-                      <TableCell align="left">{row.patient_gender}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.patient_gender}</TableCell>
+                      <TableCell align="center">
                         {row.patient_phone_number}
                       </TableCell>
-                      <TableCell align="left">{row.patient_address1}</TableCell>
-                      <TableCell align="left">{row.patient_address2}</TableCell>
-                      <TableCell align="left">{row.patient_postcode}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
+                        {row.patient_address1}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.patient_address2}
+                      </TableCell>
+                      <TableCell align="center">
+                        {row.patient_postcode}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        style={{ paddingInline: "10px" }}
+                      >
                         <div
                           className={`${
                             row.lung_cancer === 0
-                              ? "text-green-600 font-bold"
-                              : "text-red-600 font-bold"
+                              ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                              : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
                           }`}
                         >
                           {row.lung_cancer === 0 ? "Negative" : "Positive"}
                         </div>
                       </TableCell>
+                      <TableCell align="center">
+                        <div
+                          className={`${
+                            row.image_class === "Negative"
+                              ? "text-green-600 font-bold p-1 bg-green-200 rounded-md"
+                              : "text-red-600 font-bold p-1 bg-red-200 rounded-md"
+                          }`}
+                        >
+                          {row.image_class === "Negative"
+                            ? "Negative"
+                            : "Positive"}
+                        </div>
+                      </TableCell>
+
                       <TableCell align="left">
-                        <PageviewIcon className="text-blue-700" />
+                        <Link to={`view/patient/${row.patient_id}`}>
+                          <PageviewIcon className="text-blue-700 hover:text-blue-400" />{" "}
+                        </Link>
                       </TableCell>
                     </TableRow>
                   ))}

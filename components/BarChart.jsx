@@ -6,8 +6,10 @@ const BarChart = ({ result }) => {
     datasets: [
       {
         data: result,
-        backgroundColor: ["#FF204E", "#40A578"],
-        borderColor: ["rgb(255, 99, 132)", "rgb(255, 159, 64)"],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.5)",
+          "rgba(180, 255, 171, 0.5)",
+        ],
         borderWidth: 1,
       },
     ],
@@ -17,6 +19,14 @@ const BarChart = ({ result }) => {
     plugins: {
       legend: {
         display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0,
+        },
       },
     },
   };

@@ -11,7 +11,6 @@ import UserPrediction from "../pages/User/UserPrediction";
 import UserPatientList from "../pages/User/UserPatientList";
 import UserViewPatient from "../pages/User/UserViewPatient";
 import UserDataVisualisation from "../pages/User/UserDataVisualisation";
-// import Test from "../pages/User/Test";
 
 // Admin
 import AdminView from "../pages/Admin/AdminView";

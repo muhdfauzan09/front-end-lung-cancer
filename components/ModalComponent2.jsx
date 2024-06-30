@@ -10,7 +10,7 @@ const ModalComponent2 = ({ showModal, message, cancel, route }) => {
         </Modal.Body>
         <Modal.Footer>
           <div
-            className="px-14 py-3 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
+            className="px-14 py-3 bg-blue-700 hover:bg-blue-600 text-white hover:text-white font-bold rounded-md"
             onClick={() => route()}
           >
             Yes

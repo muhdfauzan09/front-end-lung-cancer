@@ -1,34 +1,59 @@
-import { useState } from "react";
-import useStore from "../useStore";
+import Api from "../../front-end/axiosConfig";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
-import { Outlet, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 
-// Icons
+// Icons and components
 import MenuIcon from "@mui/icons-material/Menu";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import SettingsIcon from "@mui/icons-material/Settings";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ModalComponent2 from "../components/ModalComponent2";
 import lung_cancer from "../src/assets/lung_cancer_logo.png";
 import LogoutRounded from "@mui/icons-material/LogoutRounded";
 import GridViewRounded from "@mui/icons-material/GridViewRounded";
 import BarChartRounded from "@mui/icons-material/BarChartRounded";
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyRounded";
-import SettingsApplicationsRounded from "@mui/icons-material/SettingsApplicationsRounded";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 
 const UserSideBar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [data, setData] = useState({
+    name: "",
+    imageUrl: "",
+  });
   const [show, setShow] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [cookies, setCookie, removeCookie] = useCookies(["userToken"]);
 
-  const getUrlImage = useStore((state) => state.votes);
+  useEffect(() => {
+    Api.get("/user/sidebar/get-info", {
+      headers: {
+        Authorization: "Bearer " + cookies["userToken"],
+      },
+    }).then((res) => {
+      // Capitalize the name
+      const capitalizedName = res.data.data.user_first_name
+        .toLowerCase()
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+
+      setData({
+        name: capitalizedName,
+        imageUrl: res.data.data.user_profile_image,
+      });
+    });
+  }, []);
+
   const handleToggleCollapse = () => {
     setCollapsed(!collapsed);
   };
+
+  const isActiveRoute = (path) => location.pathname === path;
 
   return (
     <>
@@ -49,7 +74,7 @@ const UserSideBar = () => {
       <Sidebar
         collapsed={collapsed}
         backgroundColor="#1f40af"
-        width="350px"
+        width="380px"
         style={{
           position: "fixed",
           top: "0",
@@ -60,19 +85,33 @@ const UserSideBar = () => {
           className={collapsed ? "mt-10" : "px-4 py-6 mt-10"}
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
-              if (level === 0)
-                return {
-                  fontWeight: "bold",
-                  fontSize: "larger",
-                  color: active ? "#1f40af" : "#ffffff",
-                  paddingBlock: active ? "20px" : "42px",
-                  "&:hover": {
-                    color: "black !important",
-                    fontWeight: "bolder !important",
-                    backgroundColor: "white !important",
-                    borderRadius: active ? "15px" : "10px !important",
-                  },
-                };
+              const activeStyle = {
+                color: "black",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                "&:hover": {
+                  color: "black !important",
+                  backgroundColor: "white !important",
+                },
+              };
+
+              return level === 0
+                ? {
+                    fontWeight: "bold",
+                    fontSize: "larger",
+                    paddingBlock: "42px",
+                    ...(active
+                      ? activeStyle
+                      : {
+                          color: "white",
+                          "&:hover": {
+                            color: "black !important",
+                            backgroundColor: "white !important",
+                            borderRadius: "10px !important",
+                          },
+                        }),
+                  }
+                : {};
             },
           }}
         >
@@ -91,13 +130,20 @@ const UserSideBar = () => {
             </MenuItem>
           )}
 
-          <MenuItem icon={<GridViewRounded />} component={<Link to="/" />}>
+          <MenuItem
+            icon={<GridViewRounded />}
+            component={<Link to="/" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/")}
+          >
             Dashboard
           </MenuItem>
 
           <MenuItem
             icon={<BarChartRounded />}
             component={<Link to="/visualisation" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/visualisation")}
           >
             Data Visualisation
           </MenuItem>
@@ -105,19 +151,31 @@ const UserSideBar = () => {
           <MenuItem
             icon={<PsychologyOutlinedIcon />}
             component={<Link to="/prediction" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/prediction")}
           >
             Prediction
           </MenuItem>
 
-          <MenuItem icon={<GroupsIcon />} component={<Link to="/patient" />}>
+          <MenuItem
+            icon={<GroupsIcon />}
+            component={<Link to="/patient" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/patient")}
+          >
             Patient
           </MenuItem>
 
-          <MenuItem icon={<SettingsIcon />} component={<Link to="/setting" />}>
-            Setting
+          <MenuItem
+            icon={<SettingsIcon />}
+            component={<Link to="/setting" />}
+            onClick={() => setCollapsed(true)}
+            active={isActiveRoute("/setting")}
+          >
+            Account Setting
           </MenuItem>
 
-          <div style={{ marginTop: "330px" }}>
+          <div style={{ marginTop: "320px" }}>
             {collapsed ? (
               <MenuItem
                 icon={<LogoutRounded />}
@@ -134,13 +192,32 @@ const UserSideBar = () => {
                   setShow(true);
                 }}
               >
-                <div className="flex p-2 bg-red-500">
-                  <img
-                    src={`http://127.0.0.1:5000/${getUrlImage}`}
-                    className="h-10"
-                  />
+                <div className="flex pr-3 py-3">
+                  {data.imageUrl ? (
+                    <img
+                      src={`http://127.0.0.1:5000/${data.imageUrl}`}
+                      style={{
+                        height: "60px",
+                        borderRadius: "10px",
+                        marginRight: "10px",
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <AccountCircleRoundedIcon
+                        className="text-slate-700 mr-3 mt-1"
+                        style={{
+                          fontSize: "50px",
+                        }}
+                      />
+                    </>
+                  )}
+
+                  <div>
+                    <p>{data.name}</p>
+                    <p>Doctor</p>
+                  </div>
                 </div>
-                testsdds
               </MenuItem>
             )}
           </div>

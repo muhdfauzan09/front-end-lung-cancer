@@ -125,7 +125,7 @@ const Login = () => {
 
               <div className="flex justify-center">
                 <input
-                  className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white text-xl font-bold rounded-3xl"
+                  className="px-14 py-3 mt-4 bg-blue-700 hover:bg-blue-600 text-white text-md font-bold rounded-xl"
                   type="submit"
                   value="Login"
                 />

@@ -131,10 +131,10 @@ const UserPrediction = () => {
                         {...register("gender", {
                           required: "Gender is Required",
                         })}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
+                        className="shadow border rounded w-full py-2 px-3 text-gray-700  focus:outline-blue-800  focus:shadow-outline"
                         type="text"
                       >
-                        <option selected disabled hidden>
+                        <option selected disabled value={""}>
                           --Choose Gender--
                         </option>
                         <option value="Male">Male</option>
@@ -359,7 +359,7 @@ const UserPrediction = () => {
                 <div className="flex mt-10 justify-end">
                   {loading ? (
                     <button
-                      className="bg-blue-800 hover:bg-blue-600 text-center px-14 py-3 font-bold text-white rounded-lg text-xl"
+                      className="px-14 py-3 bg-blue-700 hover:bg-blue-600 text-center text-white font-bold rounded-md"
                       disabled
                     >
                       <Spinner
@@ -374,7 +374,7 @@ const UserPrediction = () => {
                     </button>
                   ) : (
                     <button
-                      className="px-14 py-3 bg-slate-200 hover:bg-blue-400 text-blue-500 hover:text-white font-bold rounded-md"
+                      className="px-14 py-3 bg-blue-700 hover:bg-blue-600 text-center text-white font-bold rounded-md"
                       type="submit"
                     >
                       Predict
